@@ -1,0 +1,204 @@
+
+body{
+    background: linear-gradient(to right, #2c1919, #bc5858);
+}
+
+h1{
+color:#01016a;
+}
+h2{
+color:#1818b3;
+}
+
+
+.contenu{
+    
+    margin-top: 3vh;
+    margin-left: 5vh;
+    margin-right: 5vh;
+
+    height: 95vh;
+    border-radius: 10%;
+    background: linear-gradient(to right, #ffffff, #642222);
+}
+
+    section{
+        
+            border-style: solid;
+            border-radius: 10%;
+            border-color: #ff0505;
+
+    }
+    
+    section:hover{
+        
+    background: linear-gradient(to right, #4dd6ffc4, #c8c8c8);
+    color:rgb(10, 63, 104);
+
+    }
+
+.mainHeader  {
+
+display: flex;
+justify-content: space-around;
+}
+
+.mainHeader section  {
+padding-left: 5em;
+padding-right: 5em;
+border-style: none;
+border-radius: 30%;
+
+}
+
+.mainHeader section:hover  {
+    background: linear-gradient(to bottom, #72ffeac4, #ffffff);
+    color:rgb(120, 2, 2);
+    box-shadow: 15px 15px 15px rgba(227, 9, 9, 0.5);
+}
+
+
+.mainHeader  section:hover h1  {
+    color:rgb(219, 197, 0);
+}
+.mainHeader  section:hover h2  {
+    color:rgb(223, 38, 38);
+}
+
+section:hover h2  {
+    color:rgb(120, 0, 0);
+}
+
+.expSection{
+margin-left: 2em;
+margin-right: 2em;
+box-shadow: 15px 15px 15px rgba(227, 9, 9, 0.5);
+
+}
+.middleSection {
+    margin-top: 1em;
+    vertical-align: top;
+  display: flex;   
+justify-content: space-around;
+
+}
+/* en utilisant  inline block plutot que flex, mettre dans section pas dans le div
+.middleSection section{
+    vertical-align: top;
+  display: inline-block;   
+width: 49%;
+}
+*/
+
+.middleSection section{
+width: 28%;
+box-shadow: 15px 15px 15px rgba(227, 9, 9, 0.5);
+
+}
+
+section h2{
+
+  text-align: center;
+
+}
+
+
+footer{
+  
+background-color: aliceblue;
+    border-radius: 2%;
+       margin-top: 5vh;
+    margin-left: 5vh;
+    margin-right: 5vh;
+    margin-bottom: 3vh;
+    padding: 2em;    
+}
+footer form{
+      display: flex;
+flex-direction: column;
+    align-items: center; 
+ width: 100%;
+}
+label{margin-left: 1em;}
+
+textarea{
+    margin-top: 1em;
+    margin-bottom: 1em;
+    width: 50%;
+    height: 6em;
+}
+.formID{
+display:flex;
+flex-direction: row;
+
+}
+
+.checkContainer{
+
+    flex-direction: row ;
+}
+
+
+
+@media screen and (max-width: 480px) {
+
+.contenu{
+    
+    margin-top: 3vh;
+    margin-left: 0vh;
+    margin-right: 0vh;
+    margin-bottom: 1em;
+    height: auto;
+    border-radius: 1.5%;
+    background: linear-gradient(to right, aliceblue, rgb(118, 137, 154));
+
+}
+
+.expSection{
+margin-left: 0.5em;
+margin-right: 0.5em;
+
+}
+
+.mainHeader  {
+
+display: block;
+text-align: center;
+
+}
+.mainHeader ul {
+padding: 0.5em 2em;
+display: block;
+text-align: left;
+border-style: solid;
+border-radius: 10%;
+border-color: #001c59;
+}
+
+.middleSection {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-bottom: 1em;  
+    display: block   
+
+}
+
+.middleSection section{
+width: 95%;
+margin: 0.5em;
+
+}
+
+
+textarea{
+    margin-top: 1em;
+    margin-bottom: 1em;
+    width: 80%;
+    height: 6em;
+}
+.formID{
+display:block;
+justify-content: column;
+}
+
+}

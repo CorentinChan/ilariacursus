@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exo sur API</title>
+
+    <style>
+        h1{
+            text-align: center;
+            color:brown;
+        }
+        .photos-container{
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            justify-content: start;
+              flex-wrap: wrap;
+
+        }
+        .photo{
+            height :13em;
+            width: 13em;
+            margin: 2em;
+        }
+    </style>
+  
+</head>
+<body>
+    <div class="zoneTxt" id="zoneTxt">
+        
+            <input type="text" id="tagInput"> </input>
+            <button type ="button" class="btn" onclick="imgSearch()" >search</button>
+        <ul class="liste" > </ul>
+    </div>
+
+
+    <div class="ImgArea" id="zoneImg"></div>
+</body>
+
+  <script>
+
+
+                /*
+            fetch('https://jsonplaceholder.typicode.com/todos/3')
+            
+                .then(response => response.json())
+                 .then(
+                    json => {
+                                console.log(json);
+                                
+                                let text="";
+                                for (let cle in json) {
+                                text+= "<li>" +cle + " : " + json[cle] + "</li>";
+                                }
+                                zoneTxt.innerHTML= text;
+                                
+                                })
+                                        */
+        
+                                        
+         let input = document.getElementById("tagInput");
+        input.addEventListener("keydown", function(event){
+
+            if(event.key==='Enter'){
+            createPictures(input.value);
+
+            }
+
+        })
+           
+        function imgSearch(){
+            let tag = document.getElementById("tagInput").value;
+            console.log(tag);
+              createPictures(tag);
+        }
+
+        function createPictures(tag){
+                zoneImg.innerHTML ="";
+                 zoneImg.innerHTML +=  ` <h1>${tag} pictures</h1><div class="photos-container" >`;
+
+                    let url=[]; const nbPage = 10;         
+               fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=66debb996e9448ffdca45befb6a3563f&tags=${tag}&per_page=${nbPage}&format=json&nojsoncallback=1`)
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json);
+                for(let i=0;i<nbPage;i++){
+                    let photo = json.photos.photo[i]; 
+                    let sizeSuffix = "w"; 
+                     url[i] = `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_${sizeSuffix}.jpg`;
+                    console.log[url[i]];
+                zoneImg.innerHTML += '<img class="photo" src="' + url[i] + '">';
+
+                }
+                zoneImg.innerHTML += "</div>"
+                })
+                .catch(err => console.error("Erreur :", err));
+
+            }
+    </script>
+
+</html>
+

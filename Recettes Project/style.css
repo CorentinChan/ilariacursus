@@ -1,0 +1,435 @@
+body{
+    font-family: "Montserrat", "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+}
+
+/*les classes du nav (marges, display...)*/
+.navbar {
+    margin: 2rem 1rem;
+    padding: 2rem;
+}
+
+.rightNav{
+  display: flex;
+}
+
+.navbar .btnCustom{
+  padding: 0em 1rem;
+    margin-left: 1rem;
+    width: 8rem;
+    height: 3rem;
+    background-color: orangered;
+    border-style: none;
+}
+.nav-item{
+padding: 0em 1rem;
+}
+
+
+.urlActive{
+color:orangered;
+
+}
+
+.navbar .urlCustom2{
+  display: none;  /* afficher juste pour version mobile*/
+  margin-left: 1rem;
+padding: 0.5em 1rem;
+
+}
+
+.nav-link:hover{
+  color:rgb(0, 94, 255)!important;
+}
+
+.signup-container .container-fluid{
+width: 95%;
+}
+
+.signup-text{
+  width: 40%;
+}
+
+.signup-text a:hover{
+color: blue!important;
+}
+
+/* recipe menu */
+
+        .accordion {
+      border: none;
+      box-shadow: none;
+    }
+
+    .accordion-item {
+      border: none;
+      background: transparent;
+      width: 15rem;
+    }
+
+    .accordion-button {
+      background: transparent;
+      box-shadow: none !important;
+      color: #000;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      position: relative;
+    }
+
+    /* delete default bootstrap arrow*/
+    .accordion-button::after {
+      display: none;
+    }
+
+    /* add + and -*/
+    .accordion-button::before {
+      content: "+";
+      position: absolute;
+      right: 1rem;
+      font-weight: bold;
+      font-size: 1.2rem;
+      transition: transform 0.3s, content 0.3s;
+    }
+
+    .accordion-button[aria-expanded="true"]::before {
+      content: "−";
+    }
+
+    .accordion-body {
+      padding: 0.5rem 1.5rem;
+    }
+
+    
+
+    /* accordion style */
+    .accordion-body a {
+      display: block;
+      color: #333;
+      text-decoration: none;
+      padding: 0.25rem 0;
+    }
+
+    .accordion-body a:hover {
+      color: #007bff;
+    }
+
+/*classes pour la recherche et la recipe list*/
+.background-perso{
+background-color: #0b5dd700; 
+background-image: url("https://picsum.photos/400/250?random=9");
+background-size: cover;
+}
+
+.recipeSearch{
+display: flex;
+justify-content: space-around;
+margin: 0rem 0 1rem 1rem;
+}
+
+.recipeSearch form{
+width: 50rem;
+}
+
+.recipeGroup{
+    display: flex;   
+    align-items: top;   
+}
+
+.recipe-container{
+    display: flex;
+    flex-direction: column; 
+     align-items:top;
+     max-width: 100%;
+}
+
+ .form-select{
+  background-color: orangered;
+  width: 10em;
+  color : white;
+}
+
+.recipeList{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+
+    .recipeList .card {
+      height: 180px;                 
+      width: 300px;
+    }
+     .recipeList .card-img-top {
+      height: 100px;                
+      object-fit: cover;            
+    }
+    .carousel-indicators [data-bs-target] {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      text-indent: 0;               /* on annule le masquage du texte */
+      color: #fff;
+      background-color: #0d6efd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      margin: 0 5px;
+      border: none;
+    }
+    .carousel-indicators .active {
+      background-color: #0b5ed7;   
+    }
+
+    .videos-container{
+        display: flex;
+        justify-content: space-around;
+        gap :1em;
+    }
+
+    .videoTitle{
+    display: flex;
+        justify-content: space-between;
+
+    }
+
+    .subscribeSection{
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+    }
+
+      .subscribeSection .form-control::placeholder {
+    color: white !important;
+    }
+
+    .subscribeSection .btn{
+        height: 3em;
+        width: 10em;
+        background-color:orange; 
+    }
+
+        .subscribeSection .btn:hover{
+        background-color:yellow;     
+    }
+
+
+    /*classes du footer : logos et tableau*/
+    .logos{
+      display: flex;
+      justify-content: flex-end;
+
+    }
+ 
+
+    .table-perso{
+        width: 100%;
+     display: flex;
+    flex-direction: column;
+    }
+
+    .table-perso ul{
+      display: flex;
+       width: 100%;
+
+      padding: 0rem;
+      font-size: 1.3em;
+      font-weight: bold;
+      gap :15rem;
+}
+
+.table-perso li{
+  list-style-type: none;
+    text-decoration: none; 
+    color: black;  
+        text-align: left;
+
+     
+    }
+
+  .table-perso a{
+    text-decoration: none; 
+    color: black;       
+    }
+
+
+    .textTab{
+      text-decoration: none;
+      color:grey;
+    }
+
+    
+
+
+    @media (max-width: 768px) {
+
+      /*classes du nav*/
+      .navbar {
+    margin: 0rem 0rem;
+    padding: 0rem;
+}
+
+.navbar .container-fluid{
+flex-direction: row-reverse;
+justify-content: flex-start;
+  
+}
+
+.rightNav{
+margin-top: 0.2rem;
+}
+
+.navbar .btnCustom{
+  padding: 0em 0rem;
+    width: 8rem;
+    margin: 0rem 1rem;
+    height: 3rem;
+    background-color: orangered;
+    border-style: none;
+}
+.nav-item{
+padding: 0em 0rem;
+}
+
+.navbar .btnCustom2{
+  display : none;
+}
+
+.navbar .urlCustom{
+  display: none;
+margin-left: 0rem;
+padding: 00em 0rem;
+}
+
+.navbar .urlCustom2{
+  display: block;
+margin-left: 0rem;
+padding: 00em 0rem;
+}
+
+.signup-text{
+  width: 100%;
+}
+
+/*classe de la recherche et liste des recette*/
+ .recipeSearch form{
+width: 30rem;
+}
+
+ .recipeMenu{
+    display: flex;
+        flex-direction: column;
+}
+
+ .recipeGroup{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.recipe-container{
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+.recipeList{
+
+    display: flex;
+    flex-direction: column;
+}
+
+.recipeList .form-select{
+height: 2em;
+}
+
+
+.recipeSearch{
+display: flex;
+flex-direction:column;
+margin: 0;
+}
+
+.recipeSearch form{
+width: 80%;
+margin: 1rem;
+}
+
+.recipeList .card{
+  max-width: 100%;
+
+}
+
+
+/* videos container 2 par ligne*/
+.videos-container{
+    flex-wrap: wrap;          
+    gap:0em;
+}
+
+.videos-container .card{
+  width: 45%!important;
+
+}
+
+
+
+
+ .videoSection .form-select{
+  width: 7em;
+  height: 2em;
+  margin-top: 0em;
+  padding-top: 0.2em;
+  font-size: 1em!important;
+  color : white;
+}
+
+
+/*subribe section */
+   .subscribeSection .btn{
+        height: 2.5em;
+        font-size: medium;
+        margin-top: 1em;
+        width: 8em;
+    }
+
+    .videos-container .card{
+      margin-top: 0.5em ;
+
+    }
+
+
+/*footer : tableau 2 par lignes */
+
+    .table-perso{
+      flex: column;
+      margin-bottom: 5rem;
+    }
+
+    .table-perso ul{
+            gap :1rem;
+      display: flex;
+      flex-direction: column;
+      margin-top: 1em;
+        text-align: left;
+      font-size: 1.3em;
+
+}
+
+.table-perso li{
+  list-style-type: none;
+    text-decoration: none; 
+    color: black;  
+       padding: 0rem;     
+    }
+
+
+    .textTab{
+      text-decoration: none;
+      color:grey;
+      margin-left: 7rem;
+    }
+
+}
+
+ 
