@@ -224,17 +224,17 @@ width: 50rem;
     .table-perso{
         width: 100%;
      display: flex;
-    flex-direction: column;
     }
 
     .table-perso ul{
       display: flex;
+      flex-direction: column;
        width: 100%;
 
       padding: 0rem;
       font-size: 1.3em;
       font-weight: bold;
-      gap :15rem;
+      gap :1rem;
 }
 
 .table-perso li{
@@ -403,6 +403,8 @@ margin: 1rem;
 
     .table-perso{
       flex: column;
+      flex-direction: column;
+
       margin-bottom: 5rem;
     }
 
