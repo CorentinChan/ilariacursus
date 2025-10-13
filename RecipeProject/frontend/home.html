@@ -180,14 +180,15 @@
 <section class="recipeSearch me-lg-5 ">
 
   <div class="container mt-3">
-  <form class="d-flex ms-lg-5" role="search">
+  <div class="d-flex ms-lg-5" role="search">
     <div class="input-group">
       <span class="input-group-text" id="basic-addon1">
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </span>
-      <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1">
+       <button type="button " class="btn btn-noborder w-100 m-0 " onclick="recipeSearch_start();">
+        <i class="fa-solid fa-magnifying-glass" ></i></button> 
+      </span>      
+      <input type="text" class="form-control w-lg-50" placeholder="Search" id="textSearch" aria-label="Search" aria-describedby="basic-addon1">
     </div>
-  </form>
+  </div>
 </div>
 <!--
  <form class="d-flex">
@@ -207,7 +208,7 @@
 </section>
 
 <!--recipe results on caroussel( with bootstrap)  -->
-    <section class="recipeList ms-lg-5 ps-lg-5">
+    <section class="recipeList2 ">
 
                 <div class="container py-3">
 <div id="cardCarousel" class="carousel slide" data-bs-ride="false">
@@ -362,10 +363,11 @@
         <button class="btn btn-outline-primary bg-white " type="button" data-bs-target="#cardCarousel" data-bs-slide="prev">
       ⬅️ 
     </button>
-   
+    <div class="d-flex numeroButton" id="numeroButton">
     <button type="button" data-bs-target="#cardCarousel" data-bs-slide-to="0" class="active bg-white text-black-50" href="#cardCarousel">1</button>
     <button type="button" class=" bg-white text-black-50" data-bs-target="#cardCarousel" data-bs-slide-to="1"  href="#cardCarousel">2</button>
     <button type="button" class=" bg-white text-black-50" data-bs-target="#cardCarousel" data-bs-slide-to="2">3</button>
+    </div>
      <button class="btn btn-outline-primary bg-white" type="button" data-bs-target="#cardCarousel" data-bs-slide="next">
        ➡️
     </button>
