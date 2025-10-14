@@ -1,6 +1,16 @@
 
 recipesJSON = {};
 
+  //get active url
+      const chemin = window.location.pathname;
+      const urlActive= chemin.substring(chemin.lastIndexOf('/') + 1);
+      console.log("url actif "+ urlActive);
+
+      const mealCategory = ["Beef","Breakfast","Chicken","Dessert","Lamb","Miscellaneous","Pasta","Pork","Seafood","Side","Starter","Vegan","Vegetarian"];
+let randomCategory = mealCategory[Math.floor(Math.random() * mealCategory.length)];
+  if(urlActive==="home.html")setRecipeVideo( "c="+randomCategory);
+
+
 /*default recipes on search*/
 searchRecipeGen('a=chinese');
 
@@ -199,9 +209,8 @@ function searchRecipeGen(tag) {
 //setRecipeVideo(tagRecipe);
 /* search recipes from TheMealDB API with category or area*/
 function setRecipeVideo(tag) {
-
+   let url = "https://www.themealdb.com/api/json/v1/1/filter.php?" + tag;
   //fetch URL
-  let url = "https://www.themealdb.com/api/json/v1/1/filter.php?" + tag;
   fetch(url)
     .then(response => response.json())
     .then(json => {
@@ -219,10 +228,7 @@ function setRecipeVideo(tag) {
         alert("Aucune recette trouvée pour :", tag);
       }
 //display recipes in carrousel
-         const chemin = window.location.pathname;
-      const urlActive= chemin.substring(chemin.lastIndexOf('/') + 1);
-      console.log(urlActive);
-
+         
       let recipeContainer = document.getElementById("videos-container");
       let recipeContainer2 = document.getElementById("videos-container2");
 
