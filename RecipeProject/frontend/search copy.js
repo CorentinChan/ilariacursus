@@ -1,7 +1,7 @@
 
 recipesJSON = {};
 
-
+searchRecipeGen('a=chinese')
 
 function recipeSearch_start(){
 
@@ -18,50 +18,52 @@ searchRecipeAll(tag);
 // search recipes from TheMealDB API
 //searchRecipe("chicken")
 
-let count = 0;
-let nbSlide = 1;  
-let recipeCarousel = document.querySelector(".carousel-inner");
-let numeroCarousel = document.querySelector(".numeroButton");
-let contenuNumero="";
-let contenuCarousel = ``;
+let vide=true;
+let nbRecipe=0;
 
 function searchRecipeAll(tag){
  count = 0;
 nbSlide = 1;  
-
+nbRecipe=0;
+vide=true;
     contenuCarousel = `    <div class="carousel-item active"> <div class="row g-3">`;
     //recipeCarousel.innerHTML = `    <div class="carousel-item active"> <div class="row g-3">`;
 
     contenuNumero = `     <button type="button" data-bs-target="#cardCarousel" data-bs-slide-to="0" class="active bg-white text-black-50" href="#cardCarousel">1</button>`;
 
-    searchRecipe('i='+tag);
-    searchRecipe('c='+tag);
     searchRecipe('a='+tag);
-
-
-    console.log("nbslide"+nbSlide);
-
-               for (let i = 1; i < nbSlide; i++) {
-     contenuNumero += `  <button type="button" class=" bg-white text-black-50" data-bs-target="#cardCarousel" data-bs-slide-to="${i}"  href="#cardCarousel">${i+1}</button>`;
-                  }
-
-      contenuCarousel += `</div></div>`;
-
-      console.log(contenuNumero);
-      recipeCarousel.innerHTML = contenuCarousel;
-      numeroCarousel.innerHTML = contenuNumero;
+    searchRecipe('c='+tag);
+    searchRecipe('i='+tag);
+  
  }
 
- function searchRecipe(tag){
-    let url = "https://www.themealdb.com/api/json/v1/1/filter.php?"+tag;
+ async function searchRecipe(tag){
+ let url = "https://www.themealdb.com/api/json/v1/1/filter.php?"+tag;
           fetch(url)
             .then(response => response.json())
             .then(json => {
               console.log(json);
 
-              if (json.meals) {
-                 json.meals.forEach(meal=> {
-                    console.log(count);
+             if (json.meals&& json.meals.length>nbRecipe) {
+              vide=false;
+              nbRecipe=json.meals.length;
+                  recipesJSON = json;
+        recipesJSON.meals.forEach(meal => {
+          console.log(`Nom : ${meal.strMeal}`);
+          console.log(`Image : ${meal.strMealThumb}`);
+          console.log(`ID : ${meal.idMeal}`);
+          console.log("--------------");
+
+             let recipeCarousel = document.querySelector(".carousel-inner");
+                  let numeroCarousel = document.querySelector(".numeroButton");
+                    recipeCarousel.innerHTML ="";
+                  let contenuCarousel = `    <div class="carousel-item active"> <div class="row g-3">`;
+                  let contenuNumero = `     <button type="button" data-bs-target="#cardCarousel" data-bs-slide-to="0" class="active bg-white text-black-50" href="#cardCarousel">1</button>`;
+
+                  let count = 0;
+                  let nbSlide = 1;
+                        recipesJSON.meals.forEach(meal=> {
+
                   if (count > 11) {
                     count = 0;
                     nbSlide++;
@@ -69,7 +71,7 @@ nbSlide = 1;
                   }
 
                   contenuCarousel += `   <div class="col-6 col-lg-4">
-                    <div class="card shadow-sm h-100" onclick="setStorage("APImealDB",'${meal.idMeal}'); window.location.href='recipe.html';">
+                    <div class="card shadow-sm h-100" onclick="gotoRecipe('APImealDB','12345')" >
                       <img src="${meal.strMealThumb}" class="card-img-top" alt="Card 1">
                       <div class="card-body">
                         <h5 class="card-title">${meal.strMeal}</h5>
@@ -79,15 +81,34 @@ nbSlide = 1;
                   </div>`;
                   count++;
                   });
+                  for (let i = 1; i < nbSlide; i++) {
+                    contenuNumero += `     <button type="button" class=" bg-white text-black-50" data-bs-target="#cardCarousel" data-bs-slide-to="${i}"  href="#cardCarousel">${i+1}</button>`;
+                  }
                   console.log(contenuCarousel);
-                    recipeCarousel.innerHTML += contenuCarousel;
+                   contenuCarousel += `</div></div>`;
+                  recipeCarousel.innerHTML = contenuCarousel;
+                  numeroCarousel.innerHTML = contenuNumero;
 
-                }
+
+
+      
+        });
+      } else {
+                  if( vide && tag[0]==="i") alert("no recipe found");
+
+      }
+
+               
             })
             .catch(err => console.error("Erreur :", err));
-      
+    
             }
 
+
+            function gotoRecipe(type,id){
+              setStorage(type,id);
+              window.location.href='recipe.html';
+            }
 
             function searchRecipeGen(tag){
     let url = "https://www.themealdb.com/api/json/v1/1/filter.php?"+tag;

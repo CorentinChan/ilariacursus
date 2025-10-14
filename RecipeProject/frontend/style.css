@@ -290,9 +290,84 @@ width: 50rem;
       object-fit: cover;            
     }
 
-    recipeForm form{
+    .recipeForm form{
       width: 50%;
     }
+
+ /*Recipe Page*/
+
+ .recipteTitle{
+  max-width: 100%;
+ }
+ .image-container{
+display: flex;
+justify-content: center; }
+
+ .recipePhoto{
+ width: 30em;
+ height: 30em;
+ }
+
+ .descriptionLogos{
+  justify-content: space-evenly;
+ }
+
+ .descriptionRecipe{
+  align-items: center;
+  max-width: 80%;}
+
+  .makeRecipe-container{
+    display: flex;
+    flex-direction: row; 
+
+  }
+  
+  .recipeLeft{
+    width: 70%;
+  }
+
+ 
+
+   .recipeRight{
+    width: 30%;
+  }
+
+  .comments{ 
+    width: 75%;
+  }
+
+.com-container2{
+margin-left: 30%;
+width: 100%;
+}
+
+  .videoSection2{
+    background-color: #fff8f8d8;
+  }
+
+  .videos-container{
+    display: flex;
+ 
+  }
+
+   .videoSection2 .card {
+      width: 15em;              
+      object-fit: cover;            
+    }
+
+  .videoSection2 .card-img-top {
+      height: 10em;  
+      width: 15em;              
+      object-fit: cover;            
+    }
+
+    
+    .videos-container .card-title
+    {
+      height: 5em;
+    }
+
+
 
     /*Contact Page*/
 

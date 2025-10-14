@@ -320,10 +320,16 @@
 
 </footer>
 
-<div class="signWindow" id="signWindow">
-  <button type="button" class="btn btn-danger btnClose" aria-label="Close" id="closeSignWindow" onclick="document.getElementById('signWindow').style.display='none';">X</button>
-  <iframe src="login.html" width="100%" height="100%" style="border:none;"></iframe>
+<!--sign in window hidden by default -->
+<div class="overlay" id="overlay">
+  <div class="signWindow" id="signWindow">
+    <button type="button" class="btn btn-danger btnClose" aria-label="Close" id="closeSignWindow" onclick="signinClose()">X</button>
+    <iframe src="login.html" width="100%" height="100%" style="border:none;"></iframe>
+  </div>
 </div>
+
+
+
 
 </body>
 </html>

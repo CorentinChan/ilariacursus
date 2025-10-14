@@ -104,6 +104,8 @@
       </h2>
       <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#menuAccordion">
         <div class="accordion-body">
+          <a class="textSearchMenu" onclick="searchRecipeGen('c=breakfast')">Breakfast</a>
+          <a class="textSearchMenu" onclick="searchRecipeGen('c=pasta')">Pasta</a>
           <a class="textSearchMenu" onclick="searchRecipeAll('beef')">Beef</a>
           <a class="textSearchMenu" onclick="searchRecipeAll('chicken')">Chicken</a>
           <a class="textSearchMenu" onclick="searchRecipeGen('c=seafood')">Sea Food</a>
@@ -122,7 +124,12 @@
         <div class="accordion-body">
           <a class="textSearchMenu" onclick="searchRecipeGen('a=chinese')">Chinese</a>
           <a class="textSearchMenu" onclick="searchRecipeGen('a=Turkish')">Turkish</a>
+          <a class="textSearchMenu" onclick="searchRecipeGen('a=Indian')">Indian</a>
+          <a class="textSearchMenu" onclick="searchRecipeGen('a=Thai')">Thai</a>
           <a class="textSearchMenu" onclick="searchRecipeGen('a=Moroccan')">Moroccan</a>
+          <a class="textSearchMenu" onclick="searchRecipeGen('a=Mexican')">Mexican</a>
+          <a class="textSearchMenu" onclick="searchRecipeGen('a=japanese')">Japanese</a>
+
         </div>
       </div>
     </div>
@@ -395,7 +402,7 @@
   </select>
   </div>
 
-<div class="videos-container m-lg-5">
+<div class="videos-container m-lg-5" id="videos-container">
   <div class="card" >
     <img src="https://picsum.photos/400/250?random=3" class="card-img-top" alt="...">
     <div class="card-body">
