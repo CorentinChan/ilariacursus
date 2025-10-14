@@ -401,7 +401,7 @@ function setRecipeDetails(id) {
 
     // display instructions on thml
       console.log("instruc : " + json.meals[0].strInstructions);
-      instructionsDiplay.innerHTML=json.meals[0].strInstructions;
+      instructionsDiplay.innerHTML='<li class=" pt-3 d-flex border-0" > <i class="fa-regular fa-circle-check fs-2 me-3 "></i> <h4 class="text-danger pt-1">STEP</h4> </li><li class="list-group-item border-0  border-bottom mx-5  text-black-50 fs-5" > ' + recipeJSON.strInstructions.replace(/\r?\n/g, '</li><li class=" pt-3 d-flex border-0" > <i class="fa-regular fa-circle-check fs-2 me-3 "></i> <h4 class="text-danger pt-1">STEP</h4> </li><li class="list-group-item border-0  border-bottom mx-5  text-black-50 fs-5" >') + "</li>";
       ingredientsDisplay.innerHTML=contenuIngredients;
 
       document.querySelector(".recipePhoto").src= recipeJSON.strMealThumb;
