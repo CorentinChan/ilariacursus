@@ -47,6 +47,7 @@ width: 95%;
 
 .signup-text{
   width: 40%;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .signup-text a:hover{
@@ -166,8 +167,10 @@ color: blue!important;
 /*classes pour la recherche et la recipe list*/
 .background-perso{
 background-color: #0b5dd700; 
-background-image: url("https://picsum.photos/400/250?random=9");
+background-image: url("https://www.themealdb.com/images/media/meals/qptpvt1487339892.jpg");
 background-size: cover;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
 }
 
 .recipeSearch{
@@ -326,7 +329,9 @@ justify-content: center; }
     width: 70%;
   }
 
- 
+ .nbStep{
+  width: 6em;
+ }
 
    .recipeRight{
     width: 30%;

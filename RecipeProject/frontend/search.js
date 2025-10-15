@@ -26,6 +26,12 @@ function recipeSearch_start() {
 
 }
 
+if(document.getElementById("textSearch")){
+document.getElementById("textSearch").addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {recipeSearch_start(); }
+});
+
+}
 
 /* search all sort of recipes with ingredient, category or area with mealDB API */
 // search recipes from TheMealDB API
@@ -251,7 +257,7 @@ function setRecipeVideo(tag) {
                     </div>`;
         }
                 if (count <4 &&  urlActive==="home.html"  ) {
-          contenuContainer += `<div class="card" >
+          contenuContainer += `<div class="card" onclick="gotoRecipe('APImealDB','${meal.idMeal}')" >
                               <img src="${meal.strMealThumb}" class="card-img-top" alt="...">
                               <div class="card-body">
                                 <h5 class="card-title">${meal.strMeal}</h5>
@@ -362,6 +368,7 @@ function getStorageData() {
 
 
 
+
 setRecipeDetails(getStorageData());
 /* search recipes from TheMealDB API with category or area*/
 function setRecipeDetails(id) {
@@ -400,8 +407,15 @@ function setRecipeDetails(id) {
     }
 
     // display instructions on thml
-      console.log("instruc : " + json.meals[0].strInstructions);
-      instructionsDiplay.innerHTML='<li class=" pt-3 d-flex border-0" > <i class="fa-regular fa-circle-check fs-2 me-3 "></i> <h4 class="text-danger pt-1">STEP</h4> </li><li class="list-group-item border-0  border-bottom mx-5  text-black-50 fs-5" > ' + recipeJSON.strInstructions.replace(/\r?\n/g, '</li><li class=" pt-3 d-flex border-0" > <i class="fa-regular fa-circle-check fs-2 me-3 "></i> <h4 class="text-danger pt-1">STEP</h4> </li><li class="list-group-item border-0  border-bottom mx-5  text-black-50 fs-5" >') + "</li>";
+      console.log("instruc"+recipeJSON.strInstructions)
+
+let cleanInstructions = recipeJSON.strInstructions
+  .replace(/\r?\n\r?\n/g, "\n")  // remplace les doubles/triples sauts par un seul
+  .trim();
+
+        console.log("instruc : " + cleanInstructions);
+
+       instructionsDiplay.innerHTML='<li class=" pt-3 d-flex border-0" > <i class="fa-regular fa-circle-check fs-2 me-3 "></i> <h4 class="text-danger pt-1 nbStep">STEP</h4><div class="container-fluid border-top m-3 me-5 "> </li><li class="list-group-item border-0  mx-5  text-black-50 fs-5" > ' + cleanInstructions.replace(/\r?\n/g, '</li><li class=" pt-3 d-flex border-0" > <i class="fa-regular fa-circle-check fs-2 me-3 "></i> <h4 class="text-danger pt-1 nbStep">STEP</h4><div class="container-fluid border-top m-3 me-5 "> </li><li class="list-group-item border-0   mx-5  text-black-50 fs-5" >') + "</li>";
       ingredientsDisplay.innerHTML=contenuIngredients;
 
       document.querySelector(".recipePhoto").src= recipeJSON.strMealThumb;
@@ -422,6 +436,15 @@ function setRecipeDetails(id) {
 
 
       tagsDisplay.innerHTML=tagsText;
+
+      nbStep=document.querySelectorAll(".nbStep");
+
+      nbStep.forEach((step,i)=>{
+        i++;
+        step.innerText= "STEP " + i ; 
+      });
+
+      
       setRecipeVideo('c='+recipeJSON.strCategory);
 
     })
