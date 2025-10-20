@@ -5,14 +5,28 @@ recipesJSON = {};
       const chemin = window.location.pathname;
       const urlActive= chemin.substring(chemin.lastIndexOf('/') + 1);
       console.log("url actif "+ urlActive);
-
+const mealArea = ["American","British","Canadian","Chinese","Croatian","Dutch","Egyptian","Filipino", "French","Greek","Indian","Irish","Italian","Jamaican","Japanese","Kenyan","Malaysian","Mexican","Moroccan","Polish","Portuguese","Russian","Spanish","Syrian","Thai","Tunisian","Turkish","Ukrainian","Uruguayan","Vietnamese"];
       const mealCategory = ["Beef","Breakfast","Chicken","Dessert","Lamb","Miscellaneous","Pasta","Pork","Seafood","Side","Starter","Vegan","Vegetarian"];
 let randomCategory = mealCategory[Math.floor(Math.random() * mealCategory.length)];
-  if(urlActive==="home.html")setRecipeVideo( "c="+randomCategory);
+let randomArea = mealArea[Math.floor(Math.random() * mealArea.length)];
 
+  if(urlActive==="home.html"){
+    setRecipeVideo( "c="+randomCategory);
+     searchRecipeGen("c="+randomCategory);
+   // searchRecipeGen("a="+randomArea);
+  }
 
+  let searchKeySaved=localStorage.getItem("searchKey");
+   console.log("mot storé " + localStorage.getItem('searchKey'));
 /*default recipes on search*/
-searchRecipeGen('a=chinese');
+      if( ( urlActive==="search.html") && searchKeySaved !=null )
+   {
+    searchRecipeAll(searchKeySaved);
+     localStorage.setItem('searchKey',randomArea);
+
+   }
+     localStorage.setItem('searchKey',randomArea);
+
 
 /*start search on button click*/
 function recipeSearch_start() {
@@ -135,8 +149,21 @@ function recipesDisplay(tag) {
 }
 
 
+
+
+
 /* set storage id recipe and go to recipe page*/
 function gotoRecipe(type, id) {
+let cards = document.querySelectorAll('.card');
+cards.forEach((card, index) => {
+  card.addEventListener('click', () => {
+    card.classList.add('rotatec');
+
+
+
+  });
+});
+
   setStorage(type, id);
   window.location.href = 'recipe.html';
 }
@@ -188,7 +215,7 @@ function searchRecipeGen(tag) {
                          <img src="${meal.strMealThumb}" class="card-img-top" alt="Card 1">
                       <div class="card-body">
                         <h5 class="card-title">${meal.strMeal}</h5>
-                        <p class="card-text">Description carte 1.</p>
+                        <div class="d-flex justify-content-between pt-3 pb-0 mb-0"><span class=""><i class="fa-solid fa-star">N.C</i></span><span class="card-text">By mealDB API</p> </div>
                       </div>
                     </div>
                   </div>`;
@@ -367,9 +394,9 @@ function getStorageData() {
 
 
 
-
-
-setRecipeDetails(getStorageData());
+let recipeID= getStorageData();
+if(recipeID!=null)setRecipeDetails(recipeID);
+else  setRecipeDetails("52772");
 /* search recipes from TheMealDB API with category or area*/
 function setRecipeDetails(id) {
 
@@ -420,7 +447,7 @@ let cleanInstructions = recipeJSON.strInstructions
 
       document.querySelector(".recipePhoto").src= recipeJSON.strMealThumb;
       document.querySelector(".descriptionRecipe h1").innerText=recipeJSON.strMeal;
-      document.querySelector(".descriptionRecipe p").innerHTML=`<a href="${recipeJSON.strYoutube}"><i class="fa-brands fa-youtube fs-1"></i></a>`;
+      document.querySelector(".descriptionRecipe p").innerHTML=`<a href="${recipeJSON.strYoutube}" target="_blank"><i class="fa-brands fa-youtube fs-1"></i></a>`;
       document.getElementById("activeTime").innerText="N.C"
       document.getElementById("totalTime").innerText="N.C"
       document.getElementById("yield").innerText="N.C"

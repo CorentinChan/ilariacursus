@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="script.js" defer></script>
   <script src="search.js" defer></script>
 
 
   <link rel="stylesheet" href="style.css"> 
   <link rel="stylesheet" href="styleResp.css"> 
+  <link rel="stylesheet" href="animation.css"> 
+
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
    <title>Recipe Home</title>
@@ -28,7 +29,7 @@
     </button>
       <!--text to collapse -->
     <div class="collapse navbar-collapse" id="mynavbar">
-      <ul class="navbar-nav me-auto">
+      <ul class="navbar-nav  me-auto mb-3  ">
           <li class="nav-item  ">
           <a class="nav-link fs-5 urlActive" href="home.html">Home</a>
         </li>
@@ -41,8 +42,8 @@
         <li class="nav-item">
           <a class="nav-link text-black fs-5 " href="contact.html">Contact</a>
         </li>
-           <li class="nav-item">
-          <a class="nav-link text-black fs-5 urlCustom2" href="login.html">Sign in</a>
+           <li class="nav-item ">
+          <a class="nav-link text-black fs-5  pb-1 mb-2 pb-lg-0 mb-lg-0 border-0 urlCustom2" onclick="displaySignin();signupClose();">Sign in</a>
         </li>
       </ul>
       <form class="d-flex">
@@ -57,27 +58,30 @@
     </div>
       <!--right side of nav with button and link always visible-->
           <div class="rightNav">
-        <i class="fa-solid fa-magnifying-glass fa-lg m-4 me-1"></i> 
+            <input type="text" class="form-control searchWindow mt-2 " placeholder="Search" id="searchWindow" aria-label="Search"
+              aria-describedby="basic-addon1">
+          
+            <i class="fa-solid fa-magnifying-glass fa-lg m-4 mx-3 clickable " id="searchButton"></i>
             <!--
-        <a class="nav-link fs-5 urlCustom" href=""  >Sign in</a>
-        -->
-        <button class="btn btn-white fs-5 rounded-pill btnCustom2" id="signinButton" type="button">Sign in</button>
-         <button class="btn btn-primary fs-5 rounded-pill btnCustom" type="button">Sign up</button>
-  
-  
-        </div>
+                  <a class="nav-link fs-5 urlCustom" href=""  >Sign in</a>
+                  -->
+            <button type="button" class="btn btnAc fs-5 rounded-pill mx-2 btnCustom2 " id="signinButton" onclick="displaySignin();signupClose();" >Sign in</button>
+            <button type="button" class="btn  btnAc btn-primary fs-5 rounded-pill mx-2 btnCustom " id ="signupButton" onclick="displaySignup()" >Sign up</button>
+          
+          
+          </div>
   </div>
 </nav>
 
 <!--presentation section with text and link-->
-<section class="signup-container">
+<section class="signup-container tilt1 ">
 
-  <div class=" container-fluid ms-2 ms-lg-5 my-5">
+  <div class=" container-fluid ms-2 ms-lg-5 my-5 " >
   <div class="p-4 border rounded-4 shadow-sm text-white background-perso">
     <div class="signup-text">
     <h1>CHOOSE FROM THOUSANDS OF RECIPES</h1>
-    <h3 class="mb-3"> sign up to acess to a lot of recipes, add your own recipes, and many more</h3>
-    <a href="" class =" d-flex text-decoration-none text-white"><h3>Sign up today </h3> <i class="fa-solid fa-arrow-right m-2 p-2 fa-lg"></i> </a>
+    <h3 class="mb-3 "> sign up to acess to a lot of recipes, add your own recipes, and many more</h3>
+    <a  class =" d-flex text-decoration-none text-white" onclick="displaySignup()" ><h3>Sign up today </h3> <i class="fa-solid fa-arrow-right m-2 p-2 fa-lg" ></i> </a>
     </div>
   </div>
 </div>
@@ -192,7 +196,7 @@
 
   <div class="container mt-3">
   <div class="d-flex ms-lg-5" role="search">
-    <div class="input-group">
+    <div class="input-group slide-in-blurred-left">
       <span class="input-group-text btnSearch" id="basic-addon1">
         <i class="fa-solid fa-magnifying-glass " onclick="recipeSearch_start();" ></i>
       </span>      
@@ -451,7 +455,7 @@
       <div class=" d-lg-flex w-100 w-lg-75 mx-auto">
         <input type="text" class="form-control rounded-pill bg-danger border border-white text-white" id="mail" placeholder="e-mail adress">
 
-        <button type="submit" class="btn mx-3 fs-5 px-3   rounded-pill">Subscribe</button>
+        <button type="button" class="btn mx-3 fs-5 px-3   rounded-pill" onclick="displaySignup()">Subscribe</button>
               </div>
 
     </form>
@@ -502,12 +506,57 @@
 
 </footer>
 
-<div class="overlay" id="overlay">
+
+<!--Signin Div-->
+<div class="overlay" id="overlay1">
   <div class="signWindow" id="signWindow">
-    <button type="button" class="btn btn-danger btnClose" aria-label="Close" id="closeSignWindow" onclick="signinClose()">X</button>
+    <button type="button" class="btn btnAc border text-center btn-danger btnClose" aria-label="Close" id="closeSignWindow" onclick="signinClose()">X</button>
     <iframe src="login.html" width="100%" height="100%" style="border:none;"></iframe>
   </div>
 </div>
+
+<!-- sign up div -->
+<div class="overlay3" id="overlay2">
+
+  <div class=" container signup  ">
+      <button type="button" class="btn btnAc text-center btn-danger border p-1  btnClose2" aria-label="Close" id="closeSignupWindow" onclick="signupClose()">X</button>
+
+  <div class="p-4  bg-danger border text-white rounded-5">
+
+    <form class=" contactForm  ">
+      <div class="  mx-auto text-center text-grey formAlign">
+        <h2 class="text-center m-3  fw-bold pt-2">Sign up</h2>
+        <a class="text-center m-3 " onclick="displaySignin();signupClose();">Have already an account? Click here to connect!</a>
+   
+        <h5 class="text-center m-3 ">Join us and add your own recipes and many more! </h5>
+        <label for="mail" class="form-label text-center text-grey fs-4 me-3">Email</label>
+        <input type="text" class="form-control rounded-pill text-black bg-white border border-grey text-center " id="name" placeholder="tom@company.com" >
+
+        <label for="mail" class="form-label  text-center text-grey fs-4 me-3 mt-3">Pseudo</label>
+        <input type="text" class="form-control text-center text-black  w-50 rounded-pill bg-white border border-grey text-center " id="name" placeholder="tom@company.com" >
+        
+
+        <label for="password" class="form-label fs-4 me-3 mt-3">Password</label>
+        <input type="text" class="form-control text-center text-black  w-50 rounded-pill bg-white border border-grey text-center " id="password" placeholder="Min 8 characters" >
+      
+      </div>
+
+      <div class=" text-center my-3">
+      </div>
+
+      <div class=" text-center">
+       <button type="submit" class="btn btnAc mx-3 fs-5 px-3 mt-3 btn-warning  rounded-pill">Sign up!</button>
+    </div>
+
+    </form>
+  </div>
+</div>
+
+
+
+</div>
+</div>
+
 
 </body>
 </html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>XSS - vulnérable (local)</title>
+<style>body{font-family:system-ui;padding:16px}textarea{width:100%;height:80px}</style>
+<h2>XSS - Vulnérable (stockage local)</h2>
+
+<form id="f">
+  <textarea name="c" placeholder="Écris un commentaire"></textarea><br>
+  <button>Poster</button>
+</form>
+
+<h3>Commentaires :</h3>
+<div id="list"></div>
+
+<script>
+const form = document.getElementById('f');
+function render(){
+  const comments = JSON.parse(localStorage.getItem('comments2')||'[]');
+  // VULNÉRABLE : innerHTML injecte directement ce qui est stocké
+  document.getElementById('list').innerHTML = comments.map(c => `<div class="c">${c}</div>`).join('');
+}
+form.addEventListener('submit', e=>{
+  e.preventDefault();
+  const c = form.c.value;
+  const comments = JSON.parse(localStorage.getItem('comments')||'[]');
+  comments.push(c);
+  localStorage.setItem('comments2', JSON.stringify(comments));
+  form.reset();
+  render();
+});
+render();
+</script>
