@@ -96,7 +96,8 @@
 <div class="recipeRight">
 
     <!--ingredients tab-->
-    <div class="mt-5 mt-lg-0 recipeIngredients">
+    <div class="d-lg-flex mt-5 mt-lg-0 recipeIngredients">
+      <div class="">
     <h2>Ingredients</h2>
     <ul class="list-group ingredientsList" >
           <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient 1" >
@@ -104,6 +105,18 @@
     </ul>
 
         <i class="fa-regular fa-plus fs-3 mx-3  clickable " onclick='addIngredient()' ><span  class="fs-6 ">Add more ingredients</span></i>
+
+        </div>
+
+       <div class="">
+        <h2>Measure</h2>
+    <ul class="list-group measureList" >
+          <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write measure 1" >
+      
+    </ul>
+
+
+       </div>
 
     </div>
 
@@ -148,8 +161,12 @@
 
       function addIngredient(){
       let liste=document.querySelector('.ingredientsList');
-      
+      let measureList=document.querySelector('.measureList');
+
       liste.innerHTML+='           <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient " >';
+      measureList.innerHTML+='           <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write measure " >';
+
+    
     }
 let tags =1;
 
