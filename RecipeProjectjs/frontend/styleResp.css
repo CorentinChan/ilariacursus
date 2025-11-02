@@ -5,6 +5,12 @@
     
     @media (max-width: 768px) {
 
+      body{
+      overflow-x: auto;}
+
+        .mobile{
+    display:block;
+   }
       /*classes du nav*/
       .navbar {
         margin: 0rem 0rem;
@@ -61,7 +67,19 @@
       .searchWindow {
         display: none;
         width: 6em;
-        
+      }
+
+
+      .carousel-indicators  {
+
+      display: flex;
+      flex-direction: row;
+      margin-left: 1em;
+      justify-content: flex-start;
+    }
+
+      .numeroButton{
+        overflow-x:  auto;
       }
 
       /*classe de la recherche et liste des recette*/
@@ -88,14 +106,25 @@
 
         display: flex;
         flex-direction: column;
+        max-width: 100%;
 
       }
+
+      .form-control-home {
+    width: 16em;
+}
 
       .recipeList {
 
         display: flex;
         flex-direction: column;
       }
+
+         .recipeList2 {
+      width: 100%;
+      align-items: center;
+      }
+
 
       .recipeList .form-select {
         height: 2em;
@@ -123,6 +152,8 @@
       .videos-container {
         flex-wrap: wrap;
         gap: 0em;
+        overflow-x: none;
+
       }
 
       .videos-container .card {
@@ -257,12 +288,14 @@
 
       .videoSection2 .card {
         width: auto;
+        max-width: 100%;
         object-fit: cover;
       }
 
       .videoSection2 .card-img-top {
         height: auto;
         width: auto;
+        max-width: 100%;max-height: 100%;
         object-fit: cover;
       }
 
@@ -300,7 +333,6 @@
 
       top:  1% ;
     }
-
  .signup2{
     position: relative;
     width: 100%;
@@ -311,14 +343,26 @@
         .signup{
       width: 100%;
       left : 0;
-      top:0;
+      top:5em;
     }
 
  .btnClose2{
       
       left: 80%;
       top: 3em;    }
+/*Account Page */
+.cardExt{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+   }
+   .cardExt .card{
+    min-width: 15em;
 
+    width: 100%;
+    margin: 1em;
+   }
 
     }
 

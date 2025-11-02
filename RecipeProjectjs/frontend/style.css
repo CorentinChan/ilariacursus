@@ -2,6 +2,8 @@ body{
     font-family: "Montserrat", "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
     /*background-color: rgba(0, 0, 0, 0.882)!important;
     color: #fff!important;*/
+      overflow-x: hidden;
+
 }
 h1{
   font-size: 4rem;
@@ -201,8 +203,9 @@ text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 
 .recipeSearch{
 display: flex;
+width: 100%;
 justify-content: space-around;
-margin: 0rem 0 1rem 1rem;
+/*margin: 0rem 0 1rem 1rem;*/
 }
 
 .input-group{
@@ -217,21 +220,23 @@ margin: 0rem 0 1rem 1rem;
 .btnSearch:active{
     transform: scale(0.9);
 }
-
+/*
 .recipeSearch form{
 width: 50rem;
 }
-
+*/
 .recipeGroup{
     display: flex;   
     align-items: top;   
+    width: 100%;
 }
 
 .recipe-container{
     display: flex;
     flex-direction: column; 
      align-items:top;
-     max-width: 100%;
+     max-width: 90%;
+     
 }
 
  .form-select2{
@@ -259,6 +264,7 @@ width: 50rem;
       width: 300px;
 
     }
+
      .recipeList .card-img-top {
       height: 100px;                
       object-fit: cover;            
@@ -281,11 +287,22 @@ width: 50rem;
       background-color: #0b5ed7;   
     }
 
+     .numeroButton{
+        overflow-x:  auto;
+      }
+
     .videos-container{
         display: flex;
         justify-content: space-around;
         gap :1em;
     }
+       .videos-container2{
+        display: flex;
+        justify-content: space-around;
+        gap :1em;
+        overflow-x: auto;
+    }
+
 
     .videoTitle{
     display: flex;
@@ -302,6 +319,9 @@ width: 50rem;
       .subscribeSection .form-control::placeholder {
     color: white !important;
     }
+
+     .form-control-home {
+      width:30em    }
 
     
 
@@ -322,7 +342,7 @@ width: 50rem;
           display: flex;
           flex-direction: row;
           gap: 2em;
-          width: 100%;
+          width: 90%;
       }
 
     .recipeList2 .cardCarousel { 
@@ -386,8 +406,7 @@ justify-content: center; }
 margin-left: 30%;
 width: 100%;
 }
-
-  .videoSection2{
+ .videoSection2{
     background-color: #fff8f8d8;
   }
 
@@ -396,14 +415,16 @@ width: 100%;
  
   }
 
+
+
    .videoSection2 .card {
-      width: 15em;              
+      width: 16em;              
       object-fit: cover;            
     }
 
   .videoSection2 .card-img-top {
       height: 10em;  
-      width: 15em;              
+      width: 16em;              
       object-fit: cover;            
     }
 
@@ -538,10 +559,16 @@ width: 100%;
 
 
    .overlay2{
+        background-color: rgba(0, 0, 0, 0.621);
 
     position: relative;
     display: none;
    }
+
+   
+      .overlay3 {
+        background-color: rgba(0, 0, 0, 0.621);
+      }
 
    .btnAc{
     cursor: pointer;
@@ -552,3 +579,19 @@ width: 100%;
 
  
 
+/*account page */
+
+  .cardExt{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+   }
+
+   .accordion{
+    align-items: center;
+   }
+
+    .mobile{
+    display:none;
+   }

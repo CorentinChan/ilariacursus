@@ -46,12 +46,13 @@ app.set('views', path.join(__dirname, '..', 'frontend'));
 const axios = require('axios');
 
 
-// getMealByID("555");
+// getID("555"); //copy par ID
+//copyAllCat(); //copy all category
 
-console.log("test");
+getID("Dessert"); //copy one cat
 
 
-async function getMealByID(mealID,categoryID) {
+async function copyMealByID(mealID,categoryID) {
   
   const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`;
 
@@ -81,9 +82,12 @@ async function getMealByID(mealID,categoryID) {
 
     }
 
-     
-
-
+    var query = connection.query('select * FROM recipe where title=? && auteur = ? and image =? ', [post.title,post.auteur,post.image],
+       function (error, resultCheck, fields) {
+    if (error) throw error;     
+        console.log('result checl'+resultCheck[0]);
+    check=false;
+        if(resultCheck){
             let filtered = ingredient
               .map((ing, index) => ({ ingredient: ing, measure: measure[index] }))
               .filter(item => item.ingredient && item.ingredient.trim() !== ""); // garde seulement si ingredient non vide
@@ -102,6 +106,8 @@ async function getMealByID(mealID,categoryID) {
     .split(/\r?\n+/)       // coupe chaque ligne
     .map(step => step.trim()) // nettoie
     .filter(step => step);    // enlève les lignes vides
+
+
 
 
     var query = connection.query('INSERT INTO recipe SET ?', post,
@@ -142,6 +148,8 @@ async function getMealByID(mealID,categoryID) {
 
            
     });
+        }
+  });
     console.log(query.sql); // INSERT INTO contact SET `id` = 1, `title` = 'Hello MySQL'
 
 
@@ -193,9 +201,9 @@ if (categoryValues.length > 0) {
   }
 }
 
-copyBycat();
+
 let categoryID;
-async function copyBycat() {
+async function copyAllCat() {
   const url = `https://www.themealdb.com/api/json/v1/1/list.php?c=list`;
 
     try {
@@ -224,6 +232,7 @@ recipe.forEach(element => {
 }
 
 
+
 async function getID(cat) {
     
     console.log(cat);
@@ -239,10 +248,10 @@ async function getID(cat) {
 
     connection.query('SELECT id FROM category WHERE name = ?',[cat], function (error, result, fields) {
     if (error) throw error;
-    console.log(result[0].id)
+    console.log('la categorie est '+result[0].id)
     let categoryID=result[0].id;
     recipe.forEach(element => {
-       //getMealByID(element.idMeal,categoryID);
+       //copyMealByID(element.idMeal,categoryID);
        count++;
      console.log(element.idMeal); 
         });

@@ -510,8 +510,10 @@
 <!--Signin Div-->
 <div class="overlay" id="overlay1">
   <div class="signWindow" id="signWindow">
+    <!--
     <button type="button" class="btn btnAc border text-center btn-danger btnClose" aria-label="Close" id="closeSignWindow" onclick="signinClose()">X</button>
-    <iframe src="login.html" width="100%" height="100%" style="border:none;"></iframe>
+    !-->
+    <iframe src="login" width="100%" height="100%" style="border:none;"></iframe>
   </div>
 </div>
 
@@ -523,7 +525,7 @@
 
   <div class="p-4  bg-danger border text-white rounded-5">
 
-    <form class=" contactForm  ">
+    <form class=" contactForm  " action="/signup" method="post">
       <div class="  mx-auto text-center text-grey formAlign">
         <h2 class="text-center m-3  fw-bold pt-2">Sign up</h2>
         <a class="text-center m-3 " onclick="displaySignin();signupClose();">Have already an account? Click here to connect!</a>

@@ -6,7 +6,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js" defer></script>
-  <script src="search.js" defer></script>
 
 
   <link rel="stylesheet" href="style.css"> 
@@ -20,8 +19,7 @@
 <body>
 
   <!--navigation bar -->
-     <%- include('part/nav', { user: user }) %>
-
+ <%- include('part/nav', { user: user }) %>
 
 <!--presentation section with text and link-->
 <section class="signup-container tilt1 ">
@@ -30,16 +28,17 @@
   <div class="p-4 border rounded-4 shadow-sm text-white background-perso">
     <div class="signup-text">
     <h1>CHOOSE FROM THOUSANDS OF RECIPES</h1>
+    <% if(!user){ %>
     <h3 class="mb-3 "> sign up to acess to a lot of recipes, add your own recipes, and many more</h3>
     <a  class =" d-flex text-decoration-none text-white" onclick="displaySignup()" ><h3>Sign up today </h3> <i class="fa-solid fa-arrow-right m-2 p-2 fa-lg" ></i> </a>
-    </div>
+   <% } %> </div>
   </div>
 </div>
 
 </section>
 
 <!--recipe search and result -->
-<div class="recipeGroup ms-lg-5">
+<div class="recipeGroup ms-lg-5" id="searchResults">
 
   <!-- navnar on the left  -->
     <section class="recipeMenu">
@@ -57,14 +56,18 @@
         </button>
       </h2>
       <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#menuAccordion">
-        <div class="accordion-body">
-          <a class="textSearchMenu" onclick="searchRecipeGen('c=breakfast')">Breakfast</a>
-          <a class="textSearchMenu" onclick="searchRecipeGen('c=pasta')">Pasta</a>
-          <a class="textSearchMenu" onclick="searchRecipeAll('beef')">Beef</a>
-          <a class="textSearchMenu" onclick="searchRecipeAll('chicken')">Chicken</a>
-          <a class="textSearchMenu" onclick="searchRecipeGen('c=seafood')">Sea Food</a>
-          <a class="textSearchMenu" onclick="searchRecipeGen('c=side')">Side</a>
-          <a class="textSearchMenu" onclick="searchRecipeGen('c=dessert')">Dessert</a>
+        <div class=" accordion-body">
+          <form method="post"  action="searchRecipeHome" class="d-flex flex-column align-items-start text-black-50">
+            <button type="submit" class="bg-transparent my-lg-1 py-lg-1   border-0" name="textSearch" value="Breakfast">Breakfast</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="pasta">Pasta</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="beef">Beef</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Chicken">Chicken</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Breakfast">Breakfast</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Seafood">Sea food</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="side">Side</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="dessert">Dessert</button>
+          </form>
+ 
 
 
         </div>
@@ -80,14 +83,15 @@
       </h2>
       <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#menuAccordion">
         <div class="accordion-body">
-          <a class="textSearchMenu" onclick="searchRecipeGen('a=chinese')">Chinese</a>
-          <a class="textSearchMenu" onclick="searchRecipeGen('a=Turkish')">Turkish</a>
-          <a class="textSearchMenu" onclick="searchRecipeGen('a=Indian')">Indian</a>
-          <a class="textSearchMenu" onclick="searchRecipeGen('a=Thai')">Thai</a>
-          <a class="textSearchMenu" onclick="searchRecipeGen('a=Moroccan')">Moroccan</a>
-          <a class="textSearchMenu" onclick="searchRecipeGen('a=Mexican')">Mexican</a>
-          <a class="textSearchMenu" onclick="searchRecipeGen('a=japanese')">Japanese</a>
-
+          <form method="post"  action="searchRecipeHome" class="d-flex flex-column align-items-start text-black-50">
+            <button type="submit" class="bg-transparent my-lg-1 py-lg-1   border-0" name="textSearch" value="chinese">Chinese</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Turkish">Turkish</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Indian">Indian</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Thai">Thai</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Moroccan">Moroccan</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Mexican">Mexican</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Japanese">Japanese</button>
+          </form>
         </div>
       </div>
     </div>
@@ -101,8 +105,10 @@
       </h2>
       <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#menuAccordion">
         <div class="accordion-body">
-           <a class="textSearchMenu" onclick="searchRecipeGen('c=vegan')">Vegan</a>
-           <a class="textSearchMenu" onclick="searchRecipeGen('c=Vegetarian')">Vegetarian</a>
+          <form method="post"  action="searchRecipeHome" class="d-flex flex-column align-items-start text-black-50">
+            <button type="submit" class="bg-transparent my-lg-1 py-lg-1   border-0" name="textSearch" value="vegan">Vegan</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="vegetarian">Vegetarian</button>
+            </form>
         </div>
       </div>
     </div>
@@ -142,203 +148,93 @@
 <div class="recipe-container">
 
   <!--recipe  search form-->
-<section class="recipeSearch me-lg-5 ">
+<section class=" recipeSearch  ">
 
-  <div class="container mt-3">
-  <div class="d-flex ms-lg-5" role="search">
+  <div class=" container mt-3">
+   <form method="post" action="/searchRecipeHome"> 
+
+  <div class="d-flex " role="search">
     <div class="input-group slide-in-blurred-left">
       <span class="input-group-text btnSearch" id="basic-addon1">
-        <i class="fa-solid fa-magnifying-glass " onclick="recipeSearch_start();" ></i>
+       <button type="submit" style="border: none; background: none;"><i class="fa-solid fa-magnifying-glass "  ></i></button> 
       </span>      
-      <input type="text" class="form-control w-lg-50" placeholder="Search" id="textSearch" aria-label="Search" aria-describedby="basic-addon1">
+      <input type="text" class="form-control-home " name="textSearch" placeholder="Search" id="textSearch" aria-label="Search" aria-describedby="basic-addon1">
     </div>
   </div>
+      </form>
+
 </div>
-<!--
- <form class="d-flex">
-        <input class="form-control me-2" type="text" placeholder="Search">
-        <button class="btn btn-primary" type="button">Search</button>
- </form>
- -->
-<div class="searchList mt-2">
-  <select class="form-select fs-5 rounded-pill form-select-lg mx-3 form-select2"  id="recipeFilter">
+
+
+<div class="searchList mt-2 me-lg-5">
+  <select class=" form-select fs-5 me-lg-5 rounded-pill  mx-3 .form-select-lg form-select2"  >
     <option selected disabled>Sort by : </option>
     <option value="recipeDate">Sort by : date</option>
     <option value="recipeAlpha">Sort by : A to Z</option>
     <option value="recipeNote">Sort by : note </option>
   </select>
 </div>
-
 </section>
-
 <!--recipe results on caroussel( with bootstrap)  -->
     <section class="recipeList2 ">
 
-                <div class="container py-3">
-<div id="cardCarousel" class="carousel slide" data-bs-ride="false">
-  <div class="carousel-inner">
-    <!-- Slide 1 -->
-    <div class="carousel-item active">
-      <div class="row g-3">
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=1" class="card-img-top" alt="Card 1">
-            <div class="card-body">
-              <h5 class="card-title">Card 1</h5>
-              <p class="card-text">Description carte 1.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=1" class="card-img-top" alt="Card 1">
-            <div class="card-body">
-              <h5 class="card-title">Card 1</h5>
-              <p class="card-text">Description carte 1.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=1" class="card-img-top" alt="Card 1">
-            <div class="card-body">
-              <h5 class="card-title">Card 1</h5>
-              <p class="card-text">Description carte 1.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=1" class="card-img-top" alt="Card 1">
-            <div class="card-body">
-              <h5 class="card-title">Card 1</h5>
-              <p class="card-text">Description carte 1.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=1" class="card-img-top" alt="Card 1">
-            <div class="card-body">
-              <h5 class="card-title">Card 1</h5>
-              <p class="card-text">Description carte 1.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=1" class="card-img-top" alt="Card 1">
-            <div class="card-body">
-              <h5 class="card-title">Card 1</h5>
-              <p class="card-text">Description carte 1.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=1" class="card-img-top" alt="Card 1">
-            <div class="card-body">
-              <h5 class="card-title">Card 1</h5>
-              <p class="card-text">Description carte 1.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=2" class="card-img-top" alt="Card 2">
-            <div class="card-body">
-              <h5 class="card-title">Card 2</h5>
-              <p class="card-text">Description carte 2.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=3" class="card-img-top" alt="Card 3">
-            <div class="card-body">
-              <h5 class="card-title">Card 3</h5>
-              <p class="card-text">Description carte 3.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                  <div class="container py-3">
+  <div id="cardCarousel" class="carousel slide" data-bs-ride="false">
+    <div class="carousel-inner">
 
-    <!-- Slide 2 -->
-    <div class="carousel-item">
-      <div class="row g-3">
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=4" class="card-img-top" alt="Card 4">
-            <div class="card-body">
-              <h5 class="card-title">Card 4</h5>
-              <p class="card-text">Description carte 4.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=5" class="card-img-top" alt="Card 5">
-            <div class="card-body">
-              <h5 class="card-title">Card 5</h5>
-              <p class="card-text">Description carte 5.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=6" class="card-img-top" alt="Card 6">
-            <div class="card-body">
-              <h5 class="card-title">Card 6</h5>
-              <p class="card-text">Description carte 6.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <% let count = 0; let nbSlide=1; if(recipes){  %>
+      <% recipes.forEach((recipe, index) => {console.log("recipeid : "+recipe.id) %>
 
-    <!-- Slide 3 -->
-    <div class="carousel-item">
-      <div class="row g-3">
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=7" class="card-img-top" alt="Card 7">
-            <div class="card-body">
-              <h5 class="card-title">Card 7</h5>
-              <p class="card-text">Description carte 7.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-6 col-lg-4">
-          <div class="card shadow-sm h-100">
-            <img src="https://picsum.photos/400/250?random=8" class="card-img-top" alt="Card 8">
-            <div class="card-body">
-              <h5 class="card-title">Card 8</h5>
-              <p class="card-text">Description carte 8.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+        <% if (count === 0) { %>
+          <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+            <div class="row g-3">
+        <% } %>
 
-  <!-- Indicators-->
-  <div class="carousel-indicators position-static mt-3 justify-content-center" href="#cardCarousel">
+        <div class="col-6 col-lg-4">
+          
+          <form method="post" action="/goRecipe" id="myForm" >
+                <button type="submit" class="p-0 border-0 bg-transparent w-100">
+            <input hidden name="recipeID" value ="<%=recipe.id%>" >
+          <div class="card shadow-sm h-100" >
+            <img src="<%= recipe.image %>" class="card-img-top" alt="<%= recipe.title %>">
+            <div class="card-body pb-0">
+              <h5 class="card-title"><%= recipe.title %></h5>
+              <div class="d-flex justify-content-between pt-3 pb-0 mb-0">
+                <span><i class="fa-solid fa-star">N.C</i></span>
+                <span class="card-text"><%= recipe.auteur %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </button>
+        </form>
+        <% count++; %>
+        <% if (count >= 12 || index === recipes.length - 1) { %>
+            </div>
+          </div>
+          <% 
+          if (count >= 12){nbSlide++;count = 0;} }console.log(recipes.length) %>
+       
+
+      <%  }); }%>
+
+    </div>
+     <!-- Indicators-->
+  <div class="carousel-indicators  position-static mt-3 justify-content-center" href="#cardCarousel">
         <button class="btn btn-outline-primary bg-white " type="button" data-bs-target="#cardCarousel" data-bs-slide="prev">
       ⬅️ 
     </button>
-    <div class="d-flex numeroButton" id="numeroButton">
+    <div class="d-flex numeroButton " id="numeroButton">
     <button type="button" data-bs-target="#cardCarousel" data-bs-slide-to="0" class="active bg-white text-black-50" href="#cardCarousel">1</button>
-    <button type="button" class=" bg-white text-black-50" data-bs-target="#cardCarousel" data-bs-slide-to="1"  href="#cardCarousel">2</button>
-    <button type="button" class=" bg-white text-black-50" data-bs-target="#cardCarousel" data-bs-slide-to="2">3</button>
-    </div>
+     <% if(recipes){  console.log(nbSlide);  for (let i = 1; i < nbSlide; i++) { console.log(i); %>
+     
+ <button type="button" class=" bg-white text-black-50" data-bs-target="#cardCarousel" data-bs-slide-to="<%=i%>"  href="#cardCarousel" value=""><%=(i+1)%></button>   
+    <% }  }%> 
+          </div>
      <button class="btn btn-outline-primary bg-white" type="button" data-bs-target="#cardCarousel" data-bs-slide="next">
        ➡️
     </button>
   </div>
-
-  <!-- arrow-->
-  <div class="d-flex justify-content-center mt-4 gap-3">
 
         </section>
 
@@ -352,7 +248,7 @@
 
   <div class="videoTitle m-3 m-lg-5 ">
 <h2>VIDEOS</h2>
-  <select class="form-select fs-5 rounded-pill  .form-select-video form-select"  id="videosFilter">
+  <select class="form-select fs-5 rounded-pill  .form-select-video form-select2"  id="videosFilter">
     <option selected disabled>Sort by : </option>
     <option value="recipeDate">featured</option>
     <option value="recipeAlpha">featured</option>
@@ -398,7 +294,7 @@
 
   <div class="container  ">
   <div class="p-5 border rounded-4 shadow-sm bg-danger">
-    <h1 class="mx-0 px-0 mx-lg-5 px-lg-5 text-white text-center">Be the first to know about the latest deal, receive new trending recipes & more</h3>
+    <h1 class="fs-1 mx-0 px-0 mx-lg-5 px-lg-5 text-white text-center">Be the first to know about the latest deal, receive new trending recipes & more</h3>
     <p class="text-muted"></p>
 
     <form class="d-flex   content-center ">
@@ -460,7 +356,9 @@
 <!--Signin Div-->
 <div class="overlay" id="overlay1">
   <div class="signWindow" id="signWindow">
+    <!--
     <button type="button" class="btn btnAc border text-center btn-danger btnClose" aria-label="Close" id="closeSignWindow" onclick="signinClose()">X</button>
+    !-->
     <iframe src="login" width="100%" height="100%" style="border:none;"></iframe>
   </div>
 </div>

@@ -22,9 +22,11 @@
           <a class="nav-link text-black fs-5 " href="contact ">Contact</a>
         </li>
            <li class="nav-item">
-            <% console.log(user); if(user==='null') { %>
-          <a class="nav-link text-black fs-5 urlCustom2" href="login">Sign in</a>
-                   <% } %>
+            <% console.log(user); if(!user||user==='') { %>
+          <a class="nav-link text-black fs-5 urlCustom2 mb-2" href="login">Sign in</a>
+                   <% }else{  %>
+          <a class="nav-link text-black fs-5 urlCustom2 mb-2" href="account">My account</a>
+                    <% } %>
         </li>
       </ul>
       <form class="d-flex">
@@ -39,24 +41,24 @@
     </div>
       <!--right side of nav with button and link always visible-->
           <div class="rightNav">
-            <input type="text" class="form-control searchWindow mt-2 " placeholder="Search" id="searchWindow" aria-label="Search"
-              aria-describedby="basic-addon1">
-          
-            <i class="fa-solid fa-magnifying-glass fa-lg m-4 mx-3 clickable " id="searchButton"></i>
+            <form class="d-flex" method="post" action="/searchRecipes">
+              <input type="text" class="form-control searchWindow mt-2" name="textSearch" placeholder="Search" id="searchWindow"
+                aria-label="Search" aria-describedby="basic-addon1">
+              <i class="fa-solid fa-magnifying-glass fa-lg m-4 mx-3 clickable " id="searchButton"></i>
+            </form>
             <!--
                   <a class="nav-link fs-5 urlCustom" href=""  >Sign in</a>
                   -->
-                              <% console.log(user); if(!user||user==='null') { %>
+                              <%  if(!user||user==='') { %>
                                 <form action="" method="POST">
             <button class="btn  fs-5 rounded-pill mx-2 btnCustom2" id="signinButton" type="button">Sign in</button>
-            <button class="btn btn-primary fs-5 rounded-pill mx-2 btnCustom " type="button">Sign up</button>
+            <button class="btn btn-primary fs-5 rounded-pill mx-2 btnCustom " type="button" onclick=" displaySignup()">Sign up</button>
           </form>
 
                              <% }else{ %>
-                          
-                            <form action="/logout" method="POST">
-                             <button class="btn  fs-5 rounded-pill mx-2 btnCustom2" id="myAccount" type="button"> <%=user%></button>
-                             <button type="submit" class="btn btn-primary fs-5 rounded-pill mx-2 btnCustom " type="button">Sign out</button>
+                            <a href=account><button class="btn  fs-5 rounded-pill mx-2 btnCustom2" id="myAccount" type="button"> <%=user%></button></a>
+                            <form action="logout" method="POST">
+                             <button type="submit" class="btn btn-primary bg-danger fs-5 rounded-pill mx-2 btnCustom " type="button">Sign out</button>
                               </form>
 
                             <% } %>
