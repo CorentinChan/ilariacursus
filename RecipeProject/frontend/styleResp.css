@@ -69,6 +69,8 @@
         width: 30rem;
       }
 
+   
+
       .recipeMenu {
         display: flex;
         flex-direction: column;
@@ -90,6 +92,7 @@
         flex-direction: column;
 
       }
+
 
       .recipeList {
 
@@ -155,6 +158,9 @@
         margin-top: 0.5em;
 
       }
+
+    .recipeForm form {
+    width: 100%;}
 
 
       /*footer : tableau 2 par lignes */
@@ -300,6 +306,8 @@
 
       top:  1% ;
     }
+
+    
 
  .signup2{
     position: relative;

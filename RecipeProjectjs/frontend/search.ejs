@@ -23,22 +23,25 @@
 
 
 
-<div class="recipe-container fade-in">
+<div class=" container-fluid recipe-container2 fade-in">
 
   <!--recipe  search form-->
-  <form method="post" action="/searchRecipes">
 
-<section class="d-lg-flex recipeForm mx-lg-5 ">
-  <div class="container mt-3">
-  <div class="d-lg-flex mx-lg-5" role="search">
+<section class="d-lg-flex recipeForm  ">
+  <div class="container-fluid mx-2 mt-3">
+  <div class="   d-lg-flex mx-lg-0" role="search">
+      <form method="post" action="/searchRecipes">
     <div class="input-group w-lg-50 slide-in-blurred-left">
             <span class="input-group-text btnSearch" id="basic-addon1">
         <button type="submit" style="border: none; background: none;"><i class="fa-solid fa-magnifying-glass " ></i></button>
       </span>   
       <input type="text" class="form-control w-lg-50" placeholder="Search" id="textSearch" name="textSearch" aria-label="Search" aria-describedby="basic-addon1">
     </div>
+      </form>
   </div>
 </div>
+
+
 
 <!--
  <form class="d-flex">
@@ -46,9 +49,10 @@
         <button class="btn btn-primary" type="button">Search</button>
  </form>
  -->
-<div class="searchList mt-2">
-  <form action="/sortBy" method="POST">
-    <select class="form-select fs-5 rounded-pill form-select-lg mx-2 mx-lg-5 form-select2"  id="recipeFilter" name="searchFilter">
+<div class=" searchList mt-2">
+  <form action="/searchRecipes" method="POST">
+          <input hidden name="formSelect" value="true">
+    <select class="form-select fs-5 rounded-pill form-select-lg mx-2 mx-lg-5 form-select2 "  onchange="this.form.submit()"  id="recipeFilter" name="searchFilter">
       <option selected disabled>Sort by : </option>
       <option value="date">Sort by : date</option>
       <option value="title">Sort by : A to Z</option>
@@ -61,7 +65,7 @@
 <!--recipe results on caroussel( with bootstrap)  -->
     <section class="recipeList2 ">
 
-               <div class="container py-3">
+               <div class="container-fluid py-3">
   <div id="cardCarousel" class="carousel slide" data-bs-ride="false">
     <div class="carousel-inner">
 
@@ -83,7 +87,7 @@
             <div class="card-body pb-0">
               <h5 class="card-title"><%= recipe.title %></h5>
               <div class="d-flex justify-content-between pt-3 pb-0 mb-0">
-                <span><i class="fa-solid fa-star"><%=recipe.note%></i></span>
+                <span><%=recipe.note%><i class=" pb-1 ms-1 fa-solid fa-star"></i></span>
                 <span class="card-text"><%= recipe.auteur %></span>
               </div>
             </div>
@@ -176,7 +180,7 @@
 
 
 <!--Signin Div-->
-<% user='';console.log(user); if( !user || user===""){ %>
+<% console.log("pseudo :" +user); if( !user ){ %>
 <div class="overlay" id="overlay1">
   <div class="signWindow" id="signWindow">
     <button type="button" class="btn btnAc border text-center btn-danger btnClose" aria-label="Close" id="closeSignWindow" onclick="signinClose()">X</button>

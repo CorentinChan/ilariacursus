@@ -110,6 +110,14 @@
 
       }
 
+        .recipe-container2 {
+
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+
+      }
+
       .form-control-home {
     width: 16em;
 }

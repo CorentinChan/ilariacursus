@@ -44,7 +44,7 @@
     <section class="recipeMenu">
       <h1 class="ms-2"> Recipes</h1>
       
-    <div class="container mt-3 ">
+    <div class="container-fluid mt-3 ">
 
      <div class="accordion" id="menuAccordion">
 
@@ -62,9 +62,8 @@
             <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="pasta">Pasta</button>
             <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="beef">Beef</button>
             <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Chicken">Chicken</button>
-            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Breakfast">Breakfast</button>
             <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Seafood">Sea food</button>
-            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="side">Side</button>
+            <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="Side">Side</button>
             <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="dessert">Dessert</button>
           </form>
  
@@ -145,12 +144,12 @@
     </div>
 </section>
 
-<div class="recipe-container">
+<div class="recipe-container container-fluid">
 
   <!--recipe  search form-->
 <section class=" recipeSearch  ">
 
-  <div class=" container mt-3">
+  <div class=" container-fluid mt-3">
    <form method="post" action="/searchRecipeHome"> 
 
   <div class="d-flex " role="search">
@@ -166,19 +165,22 @@
 </div>
 
 
-<div class="searchList mt-2 me-lg-5">
-  <select class=" form-select fs-5 me-lg-5 rounded-pill  mx-3 .form-select-lg form-select2"  >
+<div class="searchList mt-2 ">
+  <form action="/searchRecipeHome" method="POST">
+   <input hidden name="formSelect" value="true">
+  <select class=" form-select fs-5  rounded-pill mt-1 mx-3 .form-select-lg form-select2" name="searchFilter" onchange="this.form.submit()"   >
     <option selected disabled>Sort by : </option>
-    <option value="recipeDate">Sort by : date</option>
-    <option value="recipeAlpha">Sort by : A to Z</option>
-    <option value="recipeNote">Sort by : note </option>
+      <option value="date">Sort by : date</option>
+      <option value="title">Sort by : A to Z</option>
+      <option value="note">Sort by : note </option>
   </select>
+  </form>
 </div>
 </section>
 <!--recipe results on caroussel( with bootstrap)  -->
     <section class="recipeList2 ">
 
-                  <div class="container py-3">
+                  <div class="container-fluid py-3">
   <div id="cardCarousel" class="carousel slide" data-bs-ride="false">
     <div class="carousel-inner">
 
@@ -200,7 +202,7 @@
             <div class="card-body pb-0">
               <h5 class="card-title"><%= recipe.title %></h5>
               <div class="d-flex justify-content-between pt-3 pb-0 mb-0">
-                <span><i class="fa-solid fa-star">N.C</i></span>
+                <span><%=recipe.note%><i class=" pb-1 ms-1 fa-solid fa-star"></i></span>
                 <span class="card-text"><%= recipe.auteur %></span>
               </div>
             </div>
@@ -244,55 +246,60 @@
 
 
 <!--4 videos recommanded -->
-<section class="videoSection my-5 m-lg-5   ">
+<section class=" container videoSection my-5 m-lg-5   ">
 
-  <div class="videoTitle m-3 m-lg-5 ">
+  <div class=" container-fluid ms-lg-5 videoTitle   ">
 <h2>VIDEOS</h2>
+  <form action="/searchVideos" method="POST">
   <select class="form-select fs-5 rounded-pill  .form-select-video form-select2"  id="videosFilter">
     <option selected disabled>Sort by : </option>
-    <option value="recipeDate">featured</option>
-    <option value="recipeAlpha">featured</option>
+    <option value="recipeDate">Featured</option>
+    <option value="recipeAlpha">Featured</option>
     <option value="recipeNote">featured </option>
   </select>
+  </form>
+
   </div>
 
-<div class="videos-container m-lg-5" id="videos-container">
+<div class="videos-container container-fluid m-lg-5" id="videos-container">
+
+  <% recipesRecommanded.forEach(recipe => { %>
   <div class="card" >
-    <img src="https://picsum.photos/400/250?random=3" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">By Corentin Chan</p>
-    </div>
+      <!--
+  const embedUrl = (recipe.description || '').match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+  const url = embedUrl ? `https://www.youtube.com/embed/${embedUrl[1]}` :  null;
+  console.log("url yt " +url)
+-->
+<form method="post" action="/goRecipe" id="myForm">
+      <button type="submit" class="p-0 border-0 bg-transparent ">
+        <input hidden name="recipeID" value="<%=recipe.id%>">
+        <% if(!recipe.image)recipe.image='https://cdn-s-www.dna.fr/images/60C1C7EF-628F-4C3E-B452-A807BA5B8749/NW_raw/photo-shutterstock-1660556772.jpg'; %>
+        <img src="<%= recipe.image %>" class="card-img-top" alt="<%= recipe.title %>">
+        <div class="card-body pb-0">
+          <h5 class="card-title text-black-50">
+            <%= recipe.title %>
+          </h5>
+          <div class="d-flex justify-content-between pt-3 pb-0 mb-0">
+            <span><%=recipe.note%><i class=" pb-1 ms-1 fa-solid fa-star"></i></span>
+            <span class="card-text">
+              <%= recipe.auteur %>
+            </span>
+          </div>
+
   </div>
-  <div class="card" >
-    <img src="https://picsum.photos/400/250?random=3" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">By Corentin Chan</p>
-    </div>
-  </div>
-  <div class="card" >
-    <img src="https://picsum.photos/400/250?random=3" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">By Corentin Chan</p>
-    </div>
-  </div>
-  <div class="card" >
-    <img src="https://picsum.photos/400/250?random=3" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">By Corentin Chan</p>
-    </div>
+        </button>
+    </form>
   </div>
 
+  <%});%>
+  
 </div>
 </section>
 
 <!--subscribe email form  -->
 <section class="subscribeSection">
 
-  <div class="container  ">
+  <div class="container-fluid  ">
   <div class="p-5 border rounded-4 shadow-sm bg-danger">
     <h1 class="fs-1 mx-0 px-0 mx-lg-5 px-lg-5 text-white text-center">Be the first to know about the latest deal, receive new trending recipes & more</h3>
     <p class="text-muted"></p>
@@ -309,101 +316,12 @@
 </div>
 
 </section>
-<footer>
-<!--footer with logos and links -->
 
-<!--logos with fontawesome-->
-  <div class="logos me-5 pe-lg-5">
-<i class="fa-brands fa-facebook fa-2x p-3" ></i>
-<i class="fa-brands fa-instagram fa-2x p-3"></i>
-<i class="fa-brands fa-twitter fa-2x p-3"></i>
+ <%- include('part/footer', { user: user }) %>
 
-  </div>
-
-  <div class="container mt-3">           
-  <div class="table-perso">
-
-      <ul>
-        <li><a href="">Presentations</a></li>
-        <li><a href="">Profesionals</a></li>
-        <li><a href="">Stores</a></li>
-      </ul>
-              <ul>
-         <li><a href="">Webinars      </a></li>
-          <li ><a href="">Workshops</a></li>
-         <li><a href="">Local Meetups</a></li>
-      </ul>
-        <ul>
-         <li><a href="">Ours initiative</a></li>
-          <li><a href="">Giving Back</a></li>
-         <li><a href="">Communities</a></li>
-      </ul>
-        <ul>
-        <li><a href="">Contact Form</a></li>
-        <li><a href="">Work with us</a></li>
-        <li><a href="">Visit us</a></li>
-      </ul>
-             
-
-</div>
-
-  <p class="textTab">Made by C.C</p> 
+ <%- include('part/sign', { user: user }) %>
 
 
-</footer>
-
-
-<!--Signin Div-->
-<div class="overlay" id="overlay1">
-  <div class="signWindow" id="signWindow">
-    <!--
-    <button type="button" class="btn btnAc border text-center btn-danger btnClose" aria-label="Close" id="closeSignWindow" onclick="signinClose()">X</button>
-    !-->
-    <iframe src="login" width="100%" height="100%" style="border:none;"></iframe>
-  </div>
-</div>
-
-<!-- sign up div -->
-<div class="overlay3" id="overlay2">
-
-  <div class=" container signup  ">
-      <button type="button" class="btn btnAc text-center btn-danger border p-1  btnClose2" aria-label="Close" id="closeSignupWindow" onclick="signupClose()">X</button>
-
-  <div class="p-4  bg-danger border text-white rounded-5">
-
-    <form class=" contactForm  " action="/signup" method="post">
-      <div class="  mx-auto text-center text-grey formAlign">
-        <h2 class="text-center m-3  fw-bold pt-2">Sign up</h2>
-        <a class="text-center m-3 " onclick="displaySignin();signupClose();">Have already an account? Click here to connect!</a>
-   
-        <h5 class="text-center m-3 ">Join us and add your own recipes and many more! </h5>
-        <label for="mail" class="form-label text-center text-grey fs-4 me-3">Email</label>
-        <input type="text" class="form-control rounded-pill text-black bg-white border border-grey text-center " id="name" placeholder="tom@company.com" >
-
-        <label for="mail" class="form-label  text-center text-grey fs-4 me-3 mt-3">Pseudo</label>
-        <input type="text" class="form-control text-center text-black  w-50 rounded-pill bg-white border border-grey text-center " id="name" placeholder="tom@company.com" >
-        
-
-        <label for="password" class="form-label fs-4 me-3 mt-3">Password</label>
-        <input type="text" class="form-control text-center text-black  w-50 rounded-pill bg-white border border-grey text-center " id="password" placeholder="Min 8 characters" >
-      
-      </div>
-
-      <div class=" text-center my-3">
-      </div>
-
-      <div class=" text-center">
-       <button type="submit" class="btn btnAc mx-3 fs-5 px-3 mt-3 btn-warning  rounded-pill">Sign up!</button>
-    </div>
-
-    </form>
-  </div>
-</div>
-
-
-
-</div>
-</div>
 
 
 </body>

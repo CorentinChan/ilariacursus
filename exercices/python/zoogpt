@@ -1,0 +1,140 @@
+class Animal:
+    def __init__(self, nom, poids, pere=None, mere=None):
+        self.nom = nom
+        self.poids = poids
+        self.pere = pere
+        self.mere = mere
+        self.enfants = []  # liste d'enfants (ajoutée à la question 4)
+        
+        # Si l'animal a des parents, on s'ajoute à leur liste d'enfants
+        if pere:
+            pere.enfants.append(self)
+        if mere:
+            mere.enfants.append(self)
+
+    def afficher(self):
+        print(f"Animal : {self.nom}, Poids : {self.poids} kg")
+
+    def cout_nourriture(self):
+        """Méthode abstraite : sera redéfinie dans les classes filles"""
+        raise NotImplementedError("Cette méthode doit être redéfinie dans les sous-classes.")
+
+
+# ----------------------
+# Classes dérivées
+# ----------------------
+
+class Vegetarien(Animal):
+    def __init__(self, nom, poids, quantite_fruits, pere=None, mere=None):
+        super().__init__(nom, poids, pere, mere)
+        self.quantite_fruits = quantite_fruits  # kg de fruits/jour
+
+    def cout_nourriture(self):
+        return self.quantite_fruits * 1  # 1 euro/kg de fruits
+
+    def afficher(self):
+        print(f"{self.__class__.__name__} {self.nom} : {self.quantite_fruits} kg de fruits/jour, "
+              f"Coût = {self.cout_nourriture()} €/jour")
+
+
+class Carnivore(Animal):
+    def __init__(self, nom, poids, quantite_viande, pere=None, mere=None):
+        super().__init__(nom, poids, pere, mere)
+        self.quantite_viande = quantite_viande  # kg de viande/jour
+
+    def cout_nourriture(self):
+        return self.quantite_viande * 10  # 10 euros/kg de viande
+
+    def afficher(self):
+        print(f"{self.__class__.__name__} {self.nom} : {self.quantite_viande} kg de viande/jour, "
+              f"Coût = {self.cout_nourriture()} €/jour")
+
+
+# ----------------------
+# Espèces concrètes
+# ----------------------
+
+class Chimpanze(Vegetarien):
+    def __init__(self, nom, poids, pere=None, mere=None):
+        super().__init__(nom, poids, quantite_fruits=3, pere=pere, mere=mere)
+
+
+class OrangOutan(Vegetarien):
+    def __init__(self, nom, poids, pere=None, mere=None):
+        super().__init__(nom, poids, quantite_fruits=5, pere=pere, mere=mere)
+
+
+class Lion(Carnivore):
+    def __init__(self, nom, poids, longueur_criniere, pere=None, mere=None):
+        super().__init__(nom, poids, quantite_viande=3, pere=pere, mere=mere)
+        self.longueur_criniere = longueur_criniere
+
+    def afficher(self):
+        super().afficher()
+        print(f"   Crinière : {self.longueur_criniere} cm")
+
+
+class Tigre(Carnivore):
+    def __init__(self, nom, poids, nb_rayures, pere=None, mere=None):
+        super().__init__(nom, poids, quantite_viande=4, pere=pere, mere=mere)
+        self.nb_rayures = nb_rayures
+
+    def afficher(self):
+        super().afficher()
+        print(f"   Rayures : {self.nb_rayures}")
+
+
+class Boa(Carnivore):
+    def __init__(self, nom, poids, pere=None, mere=None):
+        super().__init__(nom, poids, quantite_viande=1, pere=pere, mere=mere)
+
+class Zoo:
+    def __init__(self, nom):
+        self.nom = nom
+        self.animaux = []
+
+    def ajouter_animal(self, animal):
+        self.animaux.append(animal)
+        print(f"{animal.nom} a été ajouté au zoo {self.nom}.")
+
+    def supprimer_animal(self, nom_animal):
+        for a in self.animaux:
+            if a.nom == nom_animal:
+                self.animaux.remove(a)
+                print(f"{a.nom} a été supprimé du zoo {self.nom}.")
+                return
+        print(f"Aucun animal nommé {nom_animal} n’a été trouvé dans le zoo.")
+
+    def nombre_animaux(self):
+        return len(self.animaux)
+
+    def cout_total_nourriture(self):
+        return sum(a.cout_nourriture() for a in self.animaux)
+
+    def afficher_animaux(self):
+        print(f"\n--- Animaux du zoo {self.nom} ---")
+        for a in self.animaux:
+            a.afficher()
+        print(f"Coût total de la nourriture : {self.cout_total_nourriture()} €/jour\n")
+
+# Création du zoo
+zoo = Zoo("Minatec")
+
+# Ajout des animaux
+tigrou = Tigre("Tigrou", poids=120, nb_rayures=40)
+kaa = Boa("Kaa", poids=50)
+chita = Chimpanze("Chita", poids=30)
+
+zoo.ajouter_animal(tigrou)
+zoo.ajouter_animal(kaa)
+zoo.ajouter_animal(chita)
+
+# Affichage du zoo et du coût
+zoo.afficher_animaux()
+
+# Suppression du tigre
+zoo.supprimer_animal("Tigrou")
+
+# Affichage après suppression
+zoo.afficher_animaux()
+

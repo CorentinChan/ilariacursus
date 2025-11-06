@@ -1,0 +1,18 @@
+- /bug de recherche avec le cookies quand on utilise le tri sans faire de recherche
+
+- modify recipe
+
+- image user commentaire
+
+- 4videos recommanded iframe/recipe
+
+- proteger les formulaires 
+
+- se connecter avec google et facebook
+
+- mode admin
+
+- reseaux sociaux du site
+- partager la recette sur réseaux sociaux
+
+- /suscribe section sur home page

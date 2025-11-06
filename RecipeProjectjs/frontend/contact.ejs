@@ -46,24 +46,27 @@
   <div class=" container ">
   <div class="p-4 border rounded-4 shadow-sm text-white bg-danger">
 
-    <form class=" contactForm ">
+    <form class=" contactForm " method="post" action="/sendMailContact" >
       <div class="  w-100 w-lg-75 mx-auto">
         <label for="name" class="form-label fs-4 me-3">name</label>
-        <input type="text" class="form-control rounded-pill bg-danger border border-white text-white" id="name" >
+        <input type="text" class="form-control rounded-pill bg-danger border border-white text-white" name="name" id="name" >
         
         <label for="mail" class="form-label fs-4 me-3 mt-3">Email</label>
-        <input type="text" class="form-control rounded-pill bg-danger border border-white text-white" id="mail" >
+        <input type="text" class="form-control rounded-pill bg-danger border border-white text-white" name="mail" id="mail" >
       
         <label for="message" class="form-label fs-4 me-3 mt-3 ">message</label>
-        <input type="text" class="form-control rounded-4 bg-danger border border-white text-white  messageForm" id="message">
+        <textarea class="form-control rounded-4 bg-danger border border-white text-white  messageForm" name="message" id="message"></textarea>
   
    
       </div>
       <div class=" text-center">
+        <%if(messageCheck!="Mail sent!"){ %>
        <button type="submit" class="btn mx-3 fs-5 px-3 mt-3 btn-warning  rounded-pill">Send message</button>
+       <%}%>
     </div>
 
     </form>
+    <div class="text-center text-white"><%=messageCheck%></div>
   </div>
 </div>
 
@@ -145,10 +148,10 @@
         
 
         <label for="password" class="form-label fs-4 me-3 mt-3">Password</label>
-        <input type="text" class="form-control text-center  w-50 rounded-pill bg-white border border-grey text-center text-black" name="password" id="password" placeholder="pseudo" required >
+        <input type="password" class="form-control text-center  w-50 rounded-pill bg-white border border-grey text-center text-black" name="password" id="password" placeholder="pseudo" required >
       
         <label for="mail" class="form-label text-center text-grey fs-4 me-3 mt-3">Email</label>
-        <input type="text" class="form-control w-75 rounded-pill bg-white border border-grey text-center text-black " name="mail"  id="mail" placeholder="cor@ind.com" requires>
+        <input type="email" class="form-control w-75 rounded-pill bg-white border border-grey text-center text-black " name="mail"  id="mail" placeholder="cor@ind.com" required>
 
       </div>
 

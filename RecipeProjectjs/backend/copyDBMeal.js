@@ -24,7 +24,7 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   password : '',
-  database : 'recipeproject'
+  database : 'recipeproject3'
 });
  
 connection.connect(err => {
@@ -46,10 +46,11 @@ app.set('views', path.join(__dirname, '..', 'frontend'));
 const axios = require('axios');
 
 
-// getID("555"); //copy par ID
 //copyAllCat(); //copy all category
+//getcategory();
 
-getID("Dessert"); //copy one cat
+getID("Breakfast"); //copy one cat
+
 
 
 async function copyMealByID(mealID,categoryID) {
@@ -109,45 +110,49 @@ async function copyMealByID(mealID,categoryID) {
 
 
 
+        if(resultCheck){ 
+          var query = connection.query('INSERT INTO recipe SET ?', post,
+            function (error, results, fields) {
+              if (error) throw error;
+              const recipeID = results.insertId;  // ← récupère l’ID auto-incrémenté
+              console.log('Dernier recipeID inséré =', recipeID);
 
-    var query = connection.query('INSERT INTO recipe SET ?', post,
-       function (error, results, fields) {
-    if (error) throw error;
-    const recipeID = results.insertId;  // ← récupère l’ID auto-incrémenté
-    console.log('Dernier recipeID inséré =', recipeID);
-
-            const stepPost = step.map(txt=> [ txt, recipeID ]);
-          /*  const ing = ingredient.map(txt=> [ txt, recipeID ]);
-            const ingPost= measure.map(txt=> [ txt, ing ]);*/
-            const ingPost = ingredient.map((ingTexte, index) => {
-            const measureTexte = measure[index];      // correspondante
-            return [ ingTexte, measureTexte, recipeID ];
-          });
-            const tagPost = tag.map(txt=> [ txt, recipeID ]);
+              const stepPost = step.map(txt => [txt, recipeID]);
+              /*  const ing = ingredient.map(txt=> [ txt, recipeID ]);
+                const ingPost= measure.map(txt=> [ txt, ing ]);*/
+              const ingPost = ingredient.map((ingTexte, index) => {
+                const measureTexte = measure[index];      // correspondante
+                return [ingTexte, measureTexte, recipeID];
+              });
+              const tagPost = tag.map(txt => [txt, recipeID]);
 
 
 
-         if(stepPost){
-   connection.query('INSERT INTO instructions (instruction, recipeID) VALUES ?', [ stepPost ], (err2) => {
-        console.log("instructions insert");
-    if (err2) throw err2;});
-   }
-            if(ingPost){ 
-              connection.query('INSERT INTO liste_ingredients ( ingredient, measure, recipeID) VALUES ?',[ ingPost ], (err3) => {
-                               console.log("ingredients insert");
+              if (stepPost) {
+                connection.query('INSERT INTO instructions (instruction, recipeID) VALUES ?', [stepPost], (err2) => {
+                  console.log("instructions insert");
+                  if (err2) throw err2;
+                });
+              }
+              if (ingPost) {
+                connection.query('INSERT INTO liste_ingredients ( ingredient, measure, recipeID) VALUES ?', [ingPost], (err3) => {
+                  console.log("ingredients insert");
 
-                if (err3) throw err3; });
-            }
+                  if (err3) throw err3;
+                });
+              }
 
-            if(tagPost){ 
-                    connection.query('INSERT INTO tagslist (tag, recipeID) VALUES ?', [ tagPost ], (err4) => {
-                                            console.log("tag insert");
+              if (tagPost) {
+                connection.query('INSERT INTO tagslist (tag, recipeID) VALUES ?', [tagPost], (err4) => {
+                  console.log("tag insert");
 
-                      if (err4) throw err4; });
-                    }
+                  if (err4) throw err4;
+                });
+              }
+            
 
-           
-    });
+            });
+          }
         }
   });
     console.log(query.sql); // INSERT INTO contact SET `id` = 1, `title` = 'Hello MySQL'
@@ -157,12 +162,12 @@ async function copyMealByID(mealID,categoryID) {
   } catch (error) {
     console.error(error);
   }
+
 }
 
 
 
 
-//getcategory();
 
 async function getcategory() {
   const url = `https://www.themealdb.com/api/json/v1/1/list.php?c=list`;
@@ -248,15 +253,17 @@ async function getID(cat) {
 
     connection.query('SELECT id FROM category WHERE name = ?',[cat], function (error, result, fields) {
     if (error) throw error;
+
     console.log('la categorie est '+result[0].id)
     let categoryID=result[0].id;
+    
     recipe.forEach(element => {
-       //copyMealByID(element.idMeal,categoryID);
+       copyMealByID(element.idMeal,categoryID);
        count++;
      console.log(element.idMeal); 
         });
         console.log("count = "+count);
-
+    
                 });
 // Récupère les catégories
 

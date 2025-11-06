@@ -1,3 +1,5 @@
+console.log("script.js chargé !");
+
 document.addEventListener('DOMContentLoaded', () => {
   const links = document.querySelectorAll('nav a');
   const currentPath = window.location.pathname;
@@ -13,6 +15,50 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+  if(document.getElementById('changePasswordButton')){ 
+  const button = document.getElementById('changePasswordButton');
+  button.addEventListener('click', async (e) => {
+  e.preventDefault(); // empêche le rechargement de la page
+   let form = document.getElementById('changePasswordForm');
+   console.log('fetch function after dubmit')
+   // const form = e.target;
+    const passwordCurrent = form.passwordCurrent.value;
+    const passwordNew = form.passwordNew.value;
+    const passwordNew2 = form.passwordNew2.value;
+
+    try {
+        const res = await fetch('/changePassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                passwordCurrent,
+                passwordNew,
+                passwordNew2
+            })
+        });
+
+        const data = await res.json();
+
+        const message = document.getElementById('responseMessage');
+        if (data.succeed) {
+            message.style.color = 'green';
+            form.remove();
+            button.remove();
+            message.textContent = data.message;
+        } else {
+            message.style.color = 'red';
+            message.textContent = data.message;
+        }
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById('responseMessage').textContent = 'Erreur de connexion au serveur.';
+    }
+    });
+
+  }
 
 searchButton = document.getElementById('searchButton');
 searchWindow = document.getElementById('searchWindow');
@@ -67,14 +113,16 @@ function searchClose() {
 }
 
 //display signin page
-signinButton = document.getElementById('signinButton');
-signWindow = document.getElementById('signWindow');
-overlay = document.getElementById('overlay1');
+if(document.getElementById('signinButton')){ 
+  signinButton = document.getElementById('signinButton');
+  signWindow = document.getElementById('signWindow');
+  overlay = document.getElementById('overlay1');
 
-signinButton.addEventListener('click', () => {
-  signWindow.style.display = 'block';
-  overlay.style.display = 'block';
+  signinButton.addEventListener('click', () => {
+    signWindow.style.display = 'block';
+    overlay.style.display = 'block';
 });
+}
 
 function displaySignin(){
   signWindow.style.display = 'block';
@@ -144,5 +192,35 @@ let cards = document.querySelectorAll('.card');
 
     document.getElementById("myForm").submit();
 }
+
+
+//check form validity
+
+window.addEventListener('DOMContentLoaded', () => {
+  const forms = document.querySelectorAll('.needs-validation');
+
+  forms.forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    });
+  });
+});
+
+//to check in live during taping
+document.querySelectorAll('.form-control').forEach(input => {
+  input.addEventListener('input', e => {
+    if (input.checkValidity()) {
+      input.classList.remove('is-invalid');
+      input.classList.add('is-valid');
+    } else {
+      input.classList.remove('is-valid');
+      input.classList.add('is-invalid');
+    }
+  });
+});
 
 
