@@ -46,10 +46,10 @@ app.set('views', path.join(__dirname, '..', 'frontend'));
 const axios = require('axios');
 
 
-//copyAllCat(); //copy all category
+copyAllCat(); //copy all category
 //getcategory();
 
-getID("Breakfast"); //copy one cat
+//getID("Breakfast"); //copy one cat
 
 
 

@@ -2,11 +2,11 @@
 
 - modify recipe
 
-- image user commentaire
+-cacher les id de connexion (mysql, mail) (dotenv)
+- /4videos recommanded iframe/recipe
 
-- 4videos recommanded iframe/recipe
-
-- proteger les formulaires 
+- proteger les formulaires  
+- retour de formulaire (sign in signup)
 
 - se connecter avec google et facebook
 

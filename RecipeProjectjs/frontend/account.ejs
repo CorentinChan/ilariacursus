@@ -88,6 +88,11 @@
 
       <!-- Modify parameters -->
                 <!-- Button trigger modal -->
+        <script>
+        var myModal = new bootstrap.Modal(document.getElementById('profilModal'));
+        myModal.show();
+        </script>
+     
         <button type="button" class="bg-transparent border-0 p-0 m-0" data-bs-toggle="modal" data-bs-target="#profilModal">
                   <div class="  logo3 p-3 px-4  px-lg-5   text-center border-end">
         <i class="fa-solid fa-users fs-3"></i>
@@ -96,7 +101,7 @@
         </button>
 
         <!-- Modal -->
-        <div class="modal fade mt-5" id="profilModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade  mt-5" id="profilModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -115,6 +120,9 @@
             <label for="" class="form-label"> Description</label>
     <textarea class=" form-control mb-5 p-2 w-100 " type="text" placeholder="" value="" name="description" ><%=userInfo.description%></textarea>
 
+                  <p class="text-center text-info"><%if(message==="pseudoExist"){%>Pseudo already exist, choose another one<%}%></p>
+
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -124,7 +132,13 @@
                             </form>
           </div>
         </div>
-        
+        <% if (openDiv==="profil"){%>
+           <script>
+        var myModal = new bootstrap.Modal(document.getElementById('profilModal'));
+        myModal.show();
+        </script>
+        <%}%>
+
               <!-- create recipe -->
                     <button type="button" class="bg-transparent border-0 p-0 m-0" data-bs-toggle="modal" data-bs-target="#modalCreateRecipe">
                       <div class="logo3 p-3 px-lg-5 text-center">
@@ -175,12 +189,13 @@
 <div class="d-flex justify-content-center m-2 m-lg-5" id="comment"> 
   <div class="accordion accordion-flush bg-light   w-75 w-sm-100 justify-content-center mt-3 text-center mx-2 me-4" id="accordionFlushExample">
   <div class="accordion-item text-center w-100">
-    <h2 class="accordion-header" id="flush-headingOne">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+    <h2 class="accordion-header" id="flush-headingOne" >
+      <button class="accordion-button collapsed"  type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
        My Comments
       </button>
     </h2>
-    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+    <div id="flush-collapseOne"  class="accordion-collapse <%if(openDiv==='comments'){%>
+      show <%}else{%>collapse<%}%> " aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
       <div class="accordion-body">
         <ul class="list-unstyled  "> 
       <%commentaires.forEach(commentaire => { console.log("recipe ID in : "+commentaire.recipeID) %>
@@ -201,7 +216,8 @@
         My notes
       </button>
     </h2>
-    <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+    <div id="flush-collapseTwo" class="accordion-collapse <%if(openDiv==='note'){%>
+      show <%}else{%>collapse<%}%> " aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
       <div class="accordion-body">
          <ul class="list-unstyled"> 
       <%notes.forEach(note => { %>
@@ -230,7 +246,7 @@
     <h2 class="bg-danger-subtle text-danger border rounded-pill p-2 ">Your own recipes</h2>
 
   </div>
-  <div class="videos-container2 m-lg-5  flex-nowrap">
+  <div class="videos-container2 m-lg-5  flex-nowrap" id="ownrecipe">
 
     <% ownRecipes.forEach((recipe, index)=> {
       if(!recipe.image)recipe.image="https://www.akteos.com/fileadmin/mediatheque/blog/2021/02/Article-Chine-diner.jpeg";
@@ -260,16 +276,16 @@
         </div>
 
         <div class="d-flex justify-content-around mt-1">
-        <form method="post" action="ModifyOwn">
+        <form method="post" action="modifyForm?recipe=<%=recipe.id%>">
           <button class="btn  text-center rounded-pill mx-1 bg-primary border border-black" name="modifyOwn" value="<%=recipe.id%>">Modify</button></form>
           <form method="post" action="deleteOwn">
           <button class="btn  text-center rounded-pill mx-1 bg-danger border border-black" name="deleteOwn" value="<%=recipe.id%>">Delete</button></form>
         </div>
       </div>        
   <%  });%>
-
 </div>
 </div>
+      <p class="text-center text-warning"><%if(message==="recipeModified"){%> Your recipe have been modified<%}%></p>
 
 </section>
 

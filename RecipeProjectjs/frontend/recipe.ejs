@@ -28,6 +28,8 @@
         <!--img-->
         <div class="col-lg-6">
         <div class=" justify-content-center  image-container">
+      <% if(!recipe.image)recipe.image="https://www.akteos.com/fileadmin/mediatheque/blog/2021/02/Article-Chine-diner.jpeg"; %>
+
         <img src="<%=recipe.image %>" class=" tilt1  pt-3 rounded-5 recipePhoto" alt="image">
         </div>
           </div>
@@ -36,7 +38,7 @@
     <div class=" pt-3 descriptionRecipe">
             <!--title-->
     <h1 class="fade-in mb-0"><%=recipe.title %></h1>
-    <p class="mt-1 ps-3 pt-1">  <%=recipe.note%><i class="fa-solid fa-star"> </i>
+    <p class="mt-1 ps-3 pt-1">  <%=recipe.note%><i class="fa-solid fa-star"> </i> (<%=notes.length%>)
       <!--
      <% if (recipe.note) { for(let i=0;i<5;i++){ console.log(recipe.note);  if(recipe.note>i) {  %>
                 <i class="fa-solid fa-star">  </i> <% }else{ %>
@@ -72,15 +74,19 @@
     </div>
 
 
-    <div class="d-flex mt-5 bottomDescription">
+    <div class="d-flex mt-5 bottomDescription align-items-center">
     
     <div class="container">
     <p class="m-0 p-0">Created by <span class="text-danger" id="author"><%=recipe.auteur%></span> </p>
     <p class="m-0 p-0 text-black-50" id="nbRecipes"> <% %> </p>
     </div>
-    
+
+            <% if (user){  %>
+        <%if(message==="listAdded"){ %> 
+              <span class="text-success ">Added to list </span> <%}%>
+        <%if(message==="listAlready"){ %> <span class="text-info ">Already on list     </span><%}%>
+
        <div class="d-flex justify-content-center ">
-        <% if (user){  %>
         <form method="post" action="/addList">
         <button type="submit" class="border-0 bg-white"><i class="fa-regular fa-plus fs-3 mx-3 clickable"></i></button> 
         </form>
@@ -162,7 +168,7 @@
   
  <%if(user){ %> 
  <div class=" d-flex w-100 justify-content-between mt-5">
-  <form method="post" action="giveNote">
+  <form method="post" action="giveNote"> 
               <div class="d-flex"><i class="fa-solid fa-star p-3"></i> 
     <select class="form-select form2" onchange="this.form.submit()" name="note">
   <option selected disabled>Give a note</option>
@@ -173,11 +179,15 @@
       <option value="5">5</option>
    </select>
   </form>
+           <% if(message==='noteInserted'){%>
+        <span class="text-success p-3">Note Sent</span><%}%>
             </div>
+           
             </div>
 
+
             
-      <div class="list-group p-lg-3">
+      <div class="list-group p-3">
           <div class="list-group-item" aria-current="true">
             
             <p class="my-1 py-3">  <form method="post" action="addComment">
@@ -276,99 +286,10 @@
 </section>
 
 
-<footer>
-<!--footer with logos and links -->
+<%- include('part/footer', { user: user }) %>
 
-<!--logos with fontawesome-->
-  <div class="logos me-5 pe-lg-5">
-<i class="fa-brands fa-facebook fa-2x p-3" ></i>
-<i class="fa-brands fa-instagram fa-2x p-3"></i>
-<i class="fa-brands fa-twitter fa-2x p-3"></i>
+ <%- include('part/sign', { user: user }) %>
 
-  </div>
-
-  <div class="container mt-3">           
-  <div class="table-perso">
-
-      <ul>
-        <li><a href="">Presentations</a></li>
-        <li><a href="">Profesionals</a></li>
-        <li><a href="">Stores</a></li>
-      </ul>
-              <ul>
-         <li><a href="">Webinars      </a></li>
-          <li ><a href="">Workshops</a></li>
-         <li><a href="">Local Meetups</a></li>
-      </ul>
-        <ul>
-         <li><a href="">Ours initiative</a></li>
-          <li><a href="">Giving Back</a></li>
-         <li><a href="">Communities</a></li>
-      </ul>
-        <ul>
-        <li><a href="">Contact Form</a></li>
-        <li><a href="">Work with us</a></li>
-        <li><a href="">Visit us</a></li>
-      </ul>
-             
-
-</div>
-
-  <p class="textTab">Made by C.C</p> 
-
-
-</footer>
-
-
-
-<!--Signin Div-->
-<% user='';console.log(user); if( !user || user===""){ %>
-<div class="overlay" id="overlay1">
-  <div class="signWindow" id="signWindow">
-    <button type="button" class="btn btnAc border text-center btn-danger btnClose" aria-label="Close" id="closeSignWindow" onclick="signinClose()">X</button>
-    <iframe src="login " width="100%" height="100%" style="border:none;"></iframe>
-  </div>
-</div>
-<% } %>
-<!-- sign up div -->
-
-<div class="overlay3" id="overlay2">
-
-  <div class=" container signup  ">
-      <button type="button" class="btn btnAc text-center btn-danger border p-1  btnClose2" aria-label="Close" id="closeSignupWindow" onclick="signupClose()">X</button>
-
-  <div class="p-4  bg-danger border  rounded-5">
-
-       <form class=" contactForm  "  action="/signup" method="post">
-      <div class="  mx-auto text-center text-grey formAlign">
-        <h2 class="text-center m-4 fw-bold pt-2">Sign up</h2>
-            
-        <h5 class="text-center m-3 text-white">Join us and add your own recipes and many more! </h5>
-        
-        <label for="pseudo" class="form-label  text-center text-grey fs-4 me-3 ">Pseudo</label>
-        <input type="text" class="form-control text-center   w-50 rounded-pill bg-white border border-grey text-center text-black"  name="pseudo" id="pseudo" placeholder="pseudo" required>
-        
-
-        <label for="password" class="form-label fs-4 me-3 mt-3">Password</label>
-        <input type="text" class="form-control text-center  w-50 rounded-pill bg-white border border-grey text-center text-black" name="password" id="password" placeholder="pseudo" required >
-      
-        <label for="mail" class="form-label text-center text-grey fs-4 me-3 mt-3">Email</label>
-        <input type="text" class="form-control w-75 rounded-pill bg-white border border-grey text-center text-black " name="mail"  id="mail" placeholder="cor@ind.com" requires>
-
-      </div>
-
-
-      <div class=" text-center">
-       <button type="submit" class="btn mx-3 fs-5 px-3 mt-3 mb-4 btn-warning  rounded-pill">Sign up</button>
-    </div>
-
-    </form>
-
-  </div>
-</div>
-
-</div>
-</div>
 
 
 </body>

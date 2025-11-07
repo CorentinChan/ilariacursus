@@ -15,50 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-  if(document.getElementById('changePasswordButton')){ 
-  const button = document.getElementById('changePasswordButton');
-  button.addEventListener('click', async (e) => {
-  e.preventDefault(); // empêche le rechargement de la page
-   let form = document.getElementById('changePasswordForm');
-   console.log('fetch function after dubmit')
-   // const form = e.target;
-    const passwordCurrent = form.passwordCurrent.value;
-    const passwordNew = form.passwordNew.value;
-    const passwordNew2 = form.passwordNew2.value;
-
-    try {
-        const res = await fetch('/changePassword', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                passwordCurrent,
-                passwordNew,
-                passwordNew2
-            })
-        });
-
-        const data = await res.json();
-
-        const message = document.getElementById('responseMessage');
-        if (data.succeed) {
-            message.style.color = 'green';
-            form.remove();
-            button.remove();
-            message.textContent = data.message;
-        } else {
-            message.style.color = 'red';
-            message.textContent = data.message;
-        }
-
-    } catch (err) {
-        console.error(err);
-        document.getElementById('responseMessage').textContent = 'Erreur de connexion au serveur.';
-    }
-    });
-
-  }
+  
 
 searchButton = document.getElementById('searchButton');
 searchWindow = document.getElementById('searchWindow');
@@ -181,9 +138,11 @@ overlay2= document.getElementById('overlay2');
     }
 
 //print page
-document.getElementById("print").addEventListener("click", function() {
-window.print();
+if(document.getElementById("print")){ 
+  document.getElementById("print").addEventListener("click", function() {
+  window.print();
 });
+}
 
 
 function gotoRecipe(type, id) {
@@ -193,6 +152,95 @@ let cards = document.querySelectorAll('.card');
     document.getElementById("myForm").submit();
 }
 
+//fetch for signin check
+if(document.getElementById('signinSubmit')){ 
+  const buttonSignin = document.getElementById('signinSubmit');
+  buttonSignin.addEventListener('click', async (e) => {
+  e.preventDefault(); // empêche le rechargement de la page
+   let formSignin = document.getElementById('changePasswordForm');
+   console.log('fetch function after submit');
+   // const form = e.target;
+    const password = form.password.value;
+    const email = form.mail.value;
+
+    try {
+        const res = await fetch('/signin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                password,
+                email
+            })
+        });
+
+        const data = await res.json();
+
+        const message = document.getElementById('responseMessage');
+        if (data.succeed) {
+            message.style.color = 'green';
+            form.remove();
+            button.remove();
+            message.textContent = data.erreur;
+        } else {
+            message.style.color = 'red';
+            message.textContent = data.erreur;
+        }
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById('responseMessage').textContent = 'Erreur de connexion au serveur.';
+    }
+    });
+
+  }
+
+//fetch for change password check
+if(document.getElementById('changePasswordButton')){ 
+  const button = document.getElementById('changePasswordButton');
+  button.addEventListener('click', async (e) => {
+  e.preventDefault(); // empêche le rechargement de la page
+   let form = document.getElementById('changePasswordForm');
+   console.log('fetch function after dubmit')
+   // const form = e.target;
+    const passwordCurrent = form.passwordCurrent.value;
+    const passwordNew = form.passwordNew.value;
+    const passwordNew2 = form.passwordNew2.value;
+
+    try {
+        const res = await fetch('/changePassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                passwordCurrent,
+                passwordNew,
+                passwordNew2
+            })
+        });
+
+        const data = await res.json();
+
+        const message = document.getElementById('responseMessage');
+        if (data.succeed) {
+            message.style.color = 'green';
+            form.remove();
+            button.remove();
+            message.textContent = data.message;
+        } else {
+            message.style.color = 'red';
+            message.textContent = data.message;
+        }
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById('responseMessage').textContent = 'Erreur de connexion au serveur.';
+    }
+    });
+
+  }
 
 //check form validity
 
@@ -224,3 +272,128 @@ document.querySelectorAll('.form-control').forEach(input => {
 });
 
 
+
+//login page
+//fetch for signin check
+if(document.getElementById('signinSubmit')){ 
+  const buttonSignin = document.getElementById('signinSubmit');
+  buttonSignin.addEventListener('click', async (e) => {
+  e.preventDefault(); // empêche le rechargement de la page
+   let formSignin = document.getElementById('signinForm');
+   console.log('fetch function after submit');
+   // const form = e.target;
+    const password = formSignin.password.value;
+    const mail = formSignin.mail.value;
+
+    try {
+        const res = await fetch('/signin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                password,
+                mail
+            })
+        });
+
+        const data = await res.json();
+
+        const message = document.getElementById('responseMessage');
+        if (data.succeed) {
+           buttonSignin.remove();
+            message.style.color = 'green';
+            message.style.padding = '5em';
+            message.textContent = "You are connected, redirect in 0.5s";
+            let i = 4;
+            const interval = setInterval(function () {
+              message.textContent = "You are connected, redirect in " + i + 's';
+              i -= 1;
+              if (i < 0) {
+                clearInterval(interval);
+                location.reload(); // ou window.location.href = '/'; selon ton besoin
+              }
+            }, 100); 
+        } else {
+            message.style.color = 'red';
+            message.textContent = data.message;
+        }
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById('responseMessage').textContent = 'Erreur de connexion au serveur.';
+    }
+    });
+
+  }
+
+//display signup div
+document.getElementById("signupButton").addEventListener("click", function() {
+  document.getElementById("overlayb2").style.display = "block";
+        document.getElementById("overlayb1").style.display = 'none';
+
+});
+/*
+function signupClose() {
+  document.getElementById('overlayb2').style.display = 'none';
+}
+
+*/
+
+
+//signup fetch message
+//fetch for signout check
+if(document.getElementById('signupSubmit')){ 
+  const buttonSignup = document.getElementById('signupSubmit');
+  buttonSignup.addEventListener('click', async (e) => {
+  e.preventDefault(); // empêche le rechargement de la page
+   let formSignup = document.getElementById('signupForm');
+   console.log('fetch function after submit');
+   // const form = e.target;
+    const password = formSignup.password.value;
+    const mail = formSignup.mail.value;
+    const pseudo = formSignup.pseudo.value;
+
+    try {
+        const res = await fetch('/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                password,
+                mail,
+                pseudo
+            })
+        });
+
+        const data = await res.json();
+
+        const message = document.getElementById('responseMessageSignup');
+        if (data.succeed) {
+            message.style.color = 'green';
+            message.textContent = "Your account have been created, redirect in 3s";
+            buttonSignup.remove();
+             //formSignup.remove();;
+            
+                     let i=2;
+                  const interval = setInterval(function() {
+                       message.textContent="Your account have been created, redirect in "+i+'s';
+                       i-=1;
+                            if (i < 0) {
+                            clearInterval(interval);
+                            location.reload(); // ou window.location.href = '/'; selon ton besoin
+                          }
+                    }, 1000); 
+        } else {
+            message.style.color = 'blue';
+            message.textContent = data.message;
+        }
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById('responseMessageSignup').textContent = 'Erreur de connexion au serveur.';
+    }
+    });
+
+  }

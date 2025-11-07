@@ -58,6 +58,7 @@
       <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#menuAccordion">
         <div class=" accordion-body">
           <form method="post"  action="searchRecipeHome" class="d-flex flex-column align-items-start text-black-50">
+            <button type="submit" class="bg-transparent my-lg-1 py-lg-1   border-0" name="textSearch" value="">All</button>
             <button type="submit" class="bg-transparent my-lg-1 py-lg-1   border-0" name="textSearch" value="Breakfast">Breakfast</button>
             <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="pasta">Pasta</button>
             <button type="submit" class="bg-transparent border-0 my-lg-1 py-lg-1  " name="textSearch" value="beef">Beef</button>
@@ -185,7 +186,10 @@
     <div class="carousel-inner">
 
       <% let count = 0; let nbSlide=1; if(recipes){  %>
-      <% recipes.forEach((recipe, index) => {console.log("recipeid : "+recipe.id) %>
+      <% recipes.forEach((recipe, index) => {
+        console.log("recipeid : "+recipe.id);
+     if(!recipe.image)recipe.image="https://www.akteos.com/fileadmin/mediatheque/blog/2021/02/Article-Chine-diner.jpeg";
+ %>
 
         <% if (count === 0) { %>
           <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
@@ -319,9 +323,7 @@
 
  <%- include('part/footer', { user: user }) %>
 
- <%- include('part/sign', { user: user }) %>
-
-
+ <%- include('part/sign', { user: user}) %>
 
 
 </body>

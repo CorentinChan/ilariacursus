@@ -17,11 +17,13 @@
 </head>
 <body>
 
+   <%- include('part/nav', { user: user }) %>
+
 <!--Recipe Description-->
 <section class="recipeTitle gx-0">
 
   <div class=" container justify-content-center   ">
-<form action="createRecipe" method="post">
+<form action="modifyRecipe" method="post" id="myForm">
 <h1 class=" fs-1 m-5 p-3 text-center bg-danger rounded-4 text-white">  Write your own recipe!</h1>
         <!--img-->
         <label for="" class="form-label">Recipe Picture</label>
@@ -39,10 +41,13 @@
   <select class="form-select  mb-5 p-2" aria-label="Default select example" name="category">
   <option selected disabled>choose category</option>
     <%    category.forEach(element => { %>
-                
+                <% if(element.id===recipe.categoryID){ %>
+                <option value="<%=element.id%>" selected><%=element.name%></option>
+
+                  <%}else{ %>
                 <option value="<%=element.id%>"><%=element.name%></option>
 
-         <%   }); %>
+         <% }  }); %>
 
 </select>
 
@@ -50,16 +55,16 @@
     <div class="d-flex text-center  descriptionLogos border">
         <div class="logo1  p-2 mx-2  m-lg-3 px-lg-5 text-center border-end">
        <i class="fa-regular fa-clock fs-3 rotatec"></i>
-           <input class="form-control form-control-sm" type="text" placeholder="enter active time" name ="activeTime" >
+           <input class="form-control form-control-sm" type="text" placeholder="enter active time" name ="activeTime" value="<%=recipe.activeTime%>">
         </div>
         <div class="logo2  p-2 mx-2 m-lg-3 px-lg-5 text-center border-end">  
         <i class="fa-solid fa-clock-rotate-left fs-3 rotatec"></i>
-           <input class="form-control form-control-sm" type="text" placeholder="enter total time" name="totalTime" >
+           <input class="form-control form-control-sm" type="text" placeholder="enter total time" name="totalTime" value="<%=recipe.totalTime%>" >
 
         </div>
         <div class="logo3 p-2 mx-2 m-lg-3 px-lg-5 text-center">        
         <i class="fa-solid fa-users fs-3"></i>
-           <input class="form-control form-control-sm" type="text" placeholder="enter yield" name="yield" >
+           <input class="form-control form-control-sm" type="text" placeholder="enter yield" name="yield" value="<%=recipe.yield%>" >
 
         </div>
     </div>
@@ -69,7 +74,7 @@
     
     <div class="container">
      <label for="" class="form-label">Recipe Author</label>
-    <input class="form-control form-control-sm mb-5 p-2  w-75" type="text" placeholder="enter name author" name="auteur" >
+    <input class="form-control form-control-sm mb-5 p-2  w-75" type="text" placeholder="enter name author" name="auteur" value="<%=recipe.auteur%>" >
 
     </div>
     
@@ -85,25 +90,22 @@
 <div class="recipeLeft">
     <div class="recipeSteps">
         <h2 class=" mt-5  my-lg-0">How to make it</h2>
-    <ol class="mt-lg-4 list-group instructionsList"  >
+    <ol class="mt-lg-4 list-group instructionsList" id="instructionsList"  >
+
+    <% instructions.forEach(step => {console.log(step.instruction); %>
+
         <li class=" d-flex border-0 " > <i class="fa-regular fa-circle-check fs-2 me-3 "></i> 
           <h4 class="text-danger pt-1">STEP</h4><div class="container-fluid border-top m-3 me-5"></div> </li>
         <li class="list-group-item border-0 border-bottom-1 mx-5  text-black-50 fs-5" >           
-           <input class="form-control form-control-sm  m-3 p-3 w-75" type="text" placeholder="write step " name="step[]" >
-                   <li class=" d-flex border-0 " > <i class="fa-regular fa-circle-check fs-2 me-3 "></i> 
-          <h4 class="text-danger pt-1">STEP</h4><div class="container-fluid border-top m-3 me-5"></div> </li>
-        <li class="list-group-item border-0 border-bottom-1 mx-5  text-black-50 fs-5" >           
-           <input class="form-control form-control-sm  m-3 p-3 w-75" type="text" placeholder="write step " name="step[]" >
-                   <li class=" d-flex border-0 " > <i class="fa-regular fa-circle-check fs-2 me-3 "></i> 
-          <h4 class="text-danger pt-1">STEP</h4><div class="container-fluid border-top m-3 me-5"></div> </li>
-        <li class="list-group-item border-0 border-bottom-1 mx-5  text-black-50 fs-5" >           
-           <input class="form-control form-control-sm  m-3 p-3 w-75" type="text" placeholder="write step " name="step[]" >
-                   <li class=" d-flex border-0 " > <i class="fa-regular fa-circle-check fs-2 me-3 "></i> 
-          <h4 class="text-danger pt-1">STEP</h4><div class="container-fluid border-top m-3 me-5"></div> </li>
-        <li class="list-group-item border-0 border-bottom-1 mx-5  text-black-50 fs-5" >           
-           <input class="form-control form-control-sm  m-3 p-3 w-75" type="text" placeholder="write step " name="step[]" >
-</li>
+           <input class="form-control form-control-sm  m-3 p-3 w-75" type="text" placeholder="<%=step.instruction%> " name="step[]"  value="<%=step.instruction%>">
+           </li>
+           <% }); %>
 
+                   <li class=" d-flex border-0 " > <i class="fa-regular fa-circle-check fs-2 me-3 "></i> 
+          <h4 class="text-danger pt-1">STEP</h4><div class="container-fluid border-top m-3 me-5"></div> </li>
+        <li class="list-group-item border-0 border-bottom-1 mx-5  text-black-50 fs-5" >           
+           <input class="form-control form-control-sm  m-3 p-3 w-75" type="text" placeholder=" write new instruction " name="step[]">
+           </li>
        
     </ol>
 
@@ -119,15 +121,16 @@
 <div class="recipeRight">
 
     <!--ingredients tab-->
-    <div class="d-lg-flex mt-5 mt-lg-0 recipeIngredients">
+    <div class="d-lg-flex mt-5 mt-lg-0 recipeIngredients" >
       <div class="">
     <h2>Ingredients</h2>
-    <ul class="list-group ingredientsList" >
-          <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient 1" name="ingredient[]">
-            <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient 1" name="ingredient[]">
-          <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient 1" name="ingredient[]">
-          <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient 1" name="ingredient[]">
-    
+    <ul class="list-group ingredientsList" id="ingredientsList" >
+
+                <% ingredients.forEach(ing => { %>
+         <li><input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient 1" name="ingredient[]" value="<%=ing.ingredient%>"> </li> 
+                     <% }); %>
+               <li>   <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient 1" name="ingredient[]" >
+                </li> 
     </ul>
 
         <i class="fa-regular fa-plus fs-3 mx-3 mb-3  clickable " onclick='addIngredient()' ><span  class="fs-6 ">Add more ingredients</span></i>
@@ -136,12 +139,13 @@
 
        <div class="">
         <h2>Measure</h2>
-    <ul class="list-group measureList" >
-          <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write measure 1" name="measure[]" >
-          <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write measure 1" name="measure[]" >
-          <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write measure 1" name="measure[]" >
-          <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write measure 1" name="measure[]" >
 
+    <ul class="list-group measureList" id="measureList" >
+          <% ingredients.forEach(ing => { %>
+          <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write measure" name="measure[]" value="<%=ing.measure%>" >
+          <% }); %>
+      <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write measure" name="measure[]"  >
+      
     </ul>
 
 
@@ -153,8 +157,11 @@
     <div class=" pt-3 mt-3">
       <h3 >Tags</h3>
       <div class="dflex tags">
-    <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write TAGS" name="tag[]" >
-    <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write TAGS" name="tag[]" >
+
+     <% tags.forEach(tag => { %>
+    <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write TAGS" name="tag[]" value="<%=tag.tag%>" >
+    <% }); %>
+    <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write TAGS" name="tag[]"  >
 
           </div>  
 
@@ -184,22 +191,8 @@
 
     function addStep(){
       console.log('addstep');
-      let liste=document.querySelector('.instructionsList');
-      /*
-      liste.innerHTML+=` <li class=" d-flex border-0 " > <i class="fa-regular fa-circle-check fs-2 me-3 "></i> 
-          <h4 class="text-danger pt-1">STEP</h4><div class="container-fluid border-top m-3 me-5"></div> </li>
-        <li class="list-group-item border-0 border-bottom-1 mx-5  text-black-50 fs-5" >           
-           <input class="form-control form-control-sm  m-3 p-3 w-75" type="text" placeholder="write step " name="step2[]" >
-</li>`}
-*/
-/*
-    let stepInput =  document.createElement('input');
-        stepInput.className="form-control form-control-sm  m-3 p-3 w-75";
-        stepInput.type="text";
-        stepInput.placeholder="write step";
-        stepInput.name="step[]";
-        liste.appendChild(stepInput);
-*/
+      let liste=document.getElementById('instructionsList');
+
 
 const li1 = document.createElement("li");
 li1.className = "d-flex border-0";
@@ -218,26 +211,29 @@ li2.innerHTML = `
 liste.appendChild(li1);
 liste.appendChild(li2);
 
+/*
+const li2 = document.createElement("input");
+li2.className = "form-control form-control-sm m-3 p-3 w-75";
+li2.type = "text";
+li2.placeholder = "Write step";
+li2.name = "step[]";*/
+
 }
 
 
 
       function addIngredient(){
-      let liste=document.querySelector('.ingredientsList');
-      let measureList=document.querySelector('.measureList');
-/*
-      liste.innerHTML+='           <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient " name="ingredient">';
-      measureList.innerHTML+='           <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write measure " name="measure" >';
-*/
-      
+      let liste=document.getElementById('ingredientsList');
+      let measureList=document.getElementById('measureList');
 
-
+      let li = document.createElement('li');
    let ingInput = document.createElement('input');
     ingInput.className = "form-control form-control-sm m-2 p-2 w-75";
     ingInput.type = "text";
     ingInput.name = "ingredient[]";
     ingInput.placeholder = "write ingredient";
-    liste.appendChild(ingInput);
+    li.appendChild(ingInput);
+      liste.appendChild(li);
 
     let measureInput = document.createElement('input');
     measureInput.className = "form-control form-control-sm m-2 p-2 w-75";
@@ -259,13 +255,16 @@ let tags =2;
       tagInput.placeholder="enter Tag";
       tagInput.name="tag[]";
       liste.appendChild(tagInput);
-
     //  liste.innerHTML+='     <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="enter TAGS" name="tag">';
     }
     tags++;
+    const form = document.getElementById('myForm');
+const inputs = form.querySelectorAll('input[name="tag[]"]');
+console.log(inputs);
   }
 
     </script>
-
+ <%- include('part/footer', { user: user }) %>
+ <%- include('part/sign', { user: user}) %>
 </body>
 </html>
