@@ -29,7 +29,7 @@
          <div class="col-lg-6 justify-content-center " >
     <div class=" mx-lg-5 pt-3 descriptionRecipe">
             <!--title-->
-    <h1 class="fade-in fs-1 text-center mx-lg-5 mt-3 my-lg-5  mb-4">Bonjour, <%=user%> !</h1>
+    <h1 class="fade-in fs-1 text-center mx-lg-5 mt-3 my-lg-5  mb-4">Bonjour, <%if(userRole==="admin"){%> <span class="text-warning">Master</span> <%}%> <%=user%> !</h1>
 
     <!--change password-->
   
@@ -83,8 +83,7 @@
         </div>
       </div>
 
-      <script>
-      </script>
+
 
       <!-- Modify parameters -->
                 <!-- Button trigger modal -->
@@ -239,58 +238,10 @@
 
   </section>
 
-  <!--own recipes-->
-<section class="videoSection2  container-fluid py-5  " id="ownrecipe">
-
-  <div class="videoTitle m-3 mx-lg-5 justify-content-center ">
-    <h2 class="bg-danger-subtle text-danger border rounded-pill p-2 ">Your own recipes</h2>
-
-  </div>
-  <div class="videos-container2 m-lg-5  flex-nowrap" id="ownrecipe">
-
-    <% ownRecipes.forEach((recipe, index)=> {
-      if(!recipe.image)recipe.image="https://www.akteos.com/fileadmin/mediatheque/blog/2021/02/Article-Chine-diner.jpeg";
-      %>
-
-      <div class="cardExt">
-        <div class="card">
-          <form method="post" action="/goRecipe" id="myForm">
-            <button type="submit" class="p-0 border-0 bg-transparent w-100">
-              <input hidden name="recipeID" value="<%=recipe.id%>">
-              <img src="<%= recipe.image %>" class="card-img-top" alt="<%= recipe.title %>">
-              <div class="card-body">
-                <h5 class="card-title">
-                  <%= recipe.title %>
-                </h5>
-                <div class="d-flex justify-content-between">
-                  <span>
-                    <%=recipe.note%><i class=" pb-1 ms-1 fa-solid fa-star"></i>
-                  </span>
-                  <span class="card-text">
-                    <%= recipe.auteur %>
-                  </span>
-                </div>
-              </div>
-            </button>
-          </form>
-        </div>
-
-        <div class="d-flex justify-content-around mt-1">
-        <form method="post" action="modifyForm?recipe=<%=recipe.id%>">
-          <button class="btn  text-center rounded-pill mx-1 bg-primary border border-black" name="modifyOwn" value="<%=recipe.id%>">Modify</button></form>
-          <form method="post" action="deleteOwn">
-          <button class="btn  text-center rounded-pill mx-1 bg-danger border border-black" name="deleteOwn" value="<%=recipe.id%>">Delete</button></form>
-        </div>
-      </div>        
-  <%  });%>
-</div>
-</div>
-      <p class="text-center text-warning"><%if(message==="recipeModified"){%> Your recipe have been modified<%}%></p>
-
-</section>
+ 
 
 <!--favorites recipes-->
-<section class="videoSection2 container-fluid bg-light py-5   " id="fav">
+<section class="videoSection2 container-fluid  py-5   " id="fav">
 
   <div class="videoTitle m-3 m-lg-5 justify-content-center">
 <h2 class=" bg-danger-subtle text-danger border rounded-pill p-2 ">Your favorites recipes</h2>
@@ -332,6 +283,100 @@
 </div>
 
 </section>
+
+ <!--own recipes-->
+<section class="videoSection2 bg-light  container-fluid py-5  " >
+
+  <div class="videoTitle m-3 mx-lg-5 justify-content-center ">
+    <h2 class="bg-danger-subtle text-danger border rounded-pill p-2 ">Your own recipes</h2>
+
+  </div>
+  <div id="ownrecipe" class="videos-container2 m-lg-5  flex-nowrap" >
+
+    <% ownRecipes.forEach((recipe, index)=> {
+      if(!recipe.image)recipe.image="https://www.akteos.com/fileadmin/mediatheque/blog/2021/02/Article-Chine-diner.jpeg";
+      %>
+
+      <div class="cardExt">
+        <div class="card">
+          <form method="post" action="/goRecipe" id="myForm">
+            <button type="submit" class="p-0 border-0 bg-transparent w-100">
+              <input hidden name="recipeID" value="<%=recipe.id%>">
+              <img src="<%= recipe.image %>" class="card-img-top" alt="<%= recipe.title %>">
+              <div class="card-body">
+                <h5 class="card-title">
+                  <%= recipe.title %>
+                </h5>
+                <div class="d-flex justify-content-between">
+                  <span>
+                    <%=recipe.note%><i class=" pb-1 ms-1 fa-solid fa-star"></i>
+                  </span>
+                  <span class="card-text">
+                    <%= recipe.auteur %>
+                  </span>
+                </div>
+              </div>
+            </button>
+          </form>
+        </div>
+
+        <div class="d-flex justify-content-around mt-1">
+        <form method="post" action="modifyForm?recipe=<%=recipe.id%>">
+          <button class="btn  text-center rounded-pill mx-1 bg-primary border border-black" name="modifyOwn" value="<%=recipe.id%>">Modify</button></form>
+          <form method="post" action="deleteOwn">
+          <button class="btn  text-center rounded-pill mx-1 bg-danger border border-black" name="deleteOwn" value="<%=recipe.id%>">Delete</button></form>
+        </div>
+      </div>        
+  <%  });%>
+</div>
+</div>
+      <p  class="text-center text-warning"><%if(message==="recipeModified"){%> The recipe have been modified
+         <% }  if (message === "recipeDeleted") { %>The recipe have been deleted  <% }  if (message === "noPseudo") { %> User doesn't exist
+         <% }  if (message === "ban") { %>User have been banned<% } else if (message === "unban") { %>User have been unbanned
+         <% }  if (message === "giveAdmin") { %>Admin right have been given <% }  if (message === "removeAdmin") { %>Admin right have been removed<%}%></p>
+
+</section>
+
+<% if(userRole==="admin"){ %>
+<section class=" container-fluid  py-5   " >
+
+  <div class="videoTitle m-3 m-lg-5 justify-content-center">
+  <h2 class=" bg-danger-subtle text-danger border rounded-pill p-2 ">Admin Zone</h2>
+</div>
+
+      <div class="d-flex justify-content-around">
+          <div class="">
+                <h3>BAN/UNBAN User :</h3>
+                <form method="post" action="ban">
+                  <input type="text" placeholder="enter pseudo name " minlength="4" name="pseudo"> 
+                  <button type="submit" class="btn-warning bg-warning" name="act" value="ban">BAN</button>
+                  <button type="submit" class="btn-warning bg-primary" name="act" value="unban">UNBAN</button>
+                </form>
+              </div>
+
+                <div class="">
+                  <h3>Give Admin Right :</h3>
+                <form method="post" action="giveAdmin">
+                  <input type="text" placeholder="enter pseudo name" minlength="4" name="pseudo"> 
+                  <button type="submit" class="btn-warning bg-primary" name="act" value="giveAdmin">Give</button>
+                  <button type="submit" class="btn-warning bg-warning" name="act" value="removeAdmin">Remove</button>
+                </form>
+                </div>
+<!--
+                             <div class=" ">
+                  <h3>Modify or delete recipe by ID</h3>
+                <form method="post" >
+                  <input type="text" placeholder="enter recipe ID" name="recipeID" id="modifyrecipeForm"> 
+                  <button type="submit" class="btn-warning bg-primary"  formaction="/premodifyRecipe" name="act" value="Modify">Modify</button>
+                  <button type="submit" class="btn-warning bg-warning" formaction="/deleteRecipe" name="act" value="remove">Remove</button>
+                </form>
+                </div>
+-->
+                         
+      </div>
+
+</section>
+<%}%>
 
 <footer>
 <!--footer with logos and links -->

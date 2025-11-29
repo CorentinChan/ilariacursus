@@ -94,8 +94,20 @@
         <i class="fa-solid fa-cart-arrow-down fs-3 mx-3 clickable"></i>
         <i class="fa-solid fa-print fs-3 mx-3 clickable" id="print"></i>
     </div>
+
     </div>
-    
+              <% if(userRole==="admin"){ %>
+              <div class="d-flex justify-content-between mt-5">
+                <p class="mx-3 rounded-pill  p-1">Recipe ID : <%=recipe.id%> </p>
+              <form method="post" action="modifyForm?recipe=<%=recipe.id%>">
+              <button type="submit" class=" btn-outline-primary bg-primary mx-2 rounded-pill border border-black p-1 ">Modify recipe</button> 
+              </form>
+               <form method="post" action="deleteRecipe">
+              <button type="submit" name="recipeID" value="<%=recipe.id%>" 
+                class=" btn-warning bg-danger mx-2 rounded-pill border  border-black p-1">Delete recipe</button> 
+               </form>
+                </div>
+                <%}%>
          </div>
 
 
@@ -141,7 +153,7 @@
 
                       <img class="imageComm mx-lg-0 me-2 me-lg-3 py-1   rounded-circle" src="<%=commentaire.image%>">
                   <div class="d-flex flex-column mt-2 mt-lg-3">
-                      <h5 class="mb-1"><%=commentaire.pseudo%> </h5>
+                      <h5 class="mb-1"><%=commentaire.pseudo%> <%if(userRole==="admin"){ %> ( id : <%=commentaire.userID%> , <%=commentaire.mail %> ) <%}%>  </h5>
                       <small class="text-black-50">
                         <% const day=commentaire.date.getDate().toString().padStart(2, '0' ); const
                           month=(commentaire.date.getMonth() + 1).toString().padStart(2, '0' ); // Mois 0-11 const
@@ -154,13 +166,23 @@
                             <% }else{ %>
                               <i class="fa-regular fa-star"></i>
                               <% }}} %></div>
-                      </div> </div>
+                      </div>
+          
+                    </div>
+                      
                     <p class="my-1 py-3">
                       <%=commentaire.commentaire%>
                     </p>
-                                        
-                  
-                </div> 
+
+                </div>
+                                              <% if(userRole==="admin"){  %>
+                      <form class="justify-content-center" method="post" action="deleteCommAdmin">
+                      <button type="submit" class="btn bg-danger rounded-pill border-black border-1" >Delete comment</button>
+                      <input hidden name="pseudo" value="<%=commentaire.userID%>">
+                      <input hidden name="recipeID" value="<%=recipe.id%>">
+
+                      </form>     
+                                      <%}%>
               </div>
             </div>
 

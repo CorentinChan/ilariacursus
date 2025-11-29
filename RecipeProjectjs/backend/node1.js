@@ -14,8 +14,11 @@ var mysql = require('mysql2');
 const mysql2 = require('mysql2/promise');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
+const passport = require("passport");
+require("./passportConfig");
 require('dotenv').config();
-
+//import express from "express";
+//import serverless from "serverless-http";
 
 
 app.use(session({
@@ -24,6 +27,13 @@ app.use(session({
 	saveUninitialized: true,    // sauvegarder les nouvelles sessions même si vides
 	cookie: { maxAge: 3600000 } // durée de vie du cookie en ms (ici 1h)
 }));
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
 
 
 
@@ -127,7 +137,6 @@ app.get('/home', (req, res) => {
 		if (( (recipesMemo)) && (req.get('Referer')?.includes('/home'))) { 
 			recipes=recipesMemo;
 			res.render('home', { user: pseudo,recipes: recipes,recipesRecommanded: recipesRecoMemo  });
-	
 		}
 		else {
 			let pseudo = req.cookies.pseudo;
@@ -202,9 +211,9 @@ app.get('/recipe', async (req, res) => {
 		const pseudo = req.cookies.pseudo;
 		const pseudoID = req.cookies.pseudoID;
 		let recipeID;
-
-		if (req.cookies.recipeID){ recipeID = req.cookies.recipeID; //req.session.recipeID = recipeID;   
-}
+		if (req.query.recipe) recipeID =req.query.recipe;
+		else if (req.cookies.recipeID){ recipeID = req.cookies.recipeID; //req.session.recipeID = recipeID;   
+			}
 		 else{
 			const [recipeIDres] = await pool.execute('SELECT id from RECIPE ORDER BY RAND() LIMIT 1;');
 			 recipeID = recipeIDres[0].id ;
@@ -225,7 +234,7 @@ app.get('/recipe', async (req, res) => {
 		const [steps] = await pool.execute('SELECT * FROM instructions WHERE recipeID = ?', [recipeID]);
 		const [ingredients] = await pool.execute('SELECT * FROM liste_ingredients WHERE recipeID = ?', [recipeID]);
 		const [tags] = await pool.execute('SELECT * FROM tagsList WHERE recipeID = ?', [recipeID]);
-		const [comment] = await pool.execute('SELECT commentaires.*,users.pseudo,users.image FROM commentaires JOIN users ON commentaires.userID = users.id WHERE commentaires.recipeID = ? ;', [recipeID]);
+		const [comment] = await pool.execute('SELECT commentaires.*,users.pseudo,users.image,users.mail FROM commentaires JOIN users ON commentaires.userID = users.id WHERE commentaires.recipeID = ? ;', [recipeID]);
 		const [notes] = await pool.execute('SELECT * FROM notes WHERE recipeID = ?', [recipeID]);
 
 		const recipe = recipeResult[0];
@@ -250,11 +259,12 @@ app.get('/recipe', async (req, res) => {
 
 		console.log(recipesForU);
 
+		userRole = req.cookies.userRole;
 
 		res.render('recipe', {
 			title: 'Recipe page', user: pseudo, recipe: recipe,instructions: steps, 
 			ingredients: ingredients, tags: tags, commentaires: comment, notes: notes, 
-			recipesForU: recipesForU, message : req.query.message
+			recipesForU: recipesForU, userRole : userRole, message : req.query.message
 		});
 
 
@@ -279,6 +289,64 @@ app.get('/recipeform', (req, res) => {
 
 });
 
+app.post('/ban', (req, res) => {
+	act = req.body.act;
+	console.log(act);
+	let sql;
+	const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	if (!regex.test(req.body.pseudo))sql='UPDATE users SET role =? where pseudo= ? ';
+	else sql='UPDATE users SET role =? where mail= ? ';
+
+	if(act==="ban")role="ban";
+	else role='user';
+	connection.query(sql,[role,req.body.pseudo], function (error, result, fields) {
+		if (error) {console.log(error);res.end();}
+		console.log(result);
+		
+		if(result.affectedRows)	res.redirect(`/account?message=${act}#ownrecipe`)
+		else res.redirect(`/account?message=noPseudo#ownrecipe`);
+		//res.render('recipeForm', { title: 'Recipe page', user: pseudo, category: result });
+	});
+
+});
+
+app.post('/giveAdmin', (req, res) => {
+	act = req.body.act;
+	console.log(act);
+
+	const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+	let sql;
+	if (!regex.test(req.body.pseudo))sql='UPDATE users SET role =? where pseudo= ? ';
+	else sql='UPDATE users SET role =? where mail= ? ';
+
+	if(act==="giveAdmin")role="admin";
+	else role='user';
+	connection.query(sql,[role,req.body.pseudo], function (error, result, fields) {
+		if (error) {console.log(error);res.end();}
+		console.log(result);
+	
+	
+		if(result.affectedRows)res.redirect(`/account?message=${act}#ownrecipe`);
+		else res.redirect(`/account?message=noPseudo#ownrecipe`);
+		//res.render('recipeForm', { title: 'Recipe page', user: pseudo, category: result });
+	});
+
+});
+
+app.post('/premodifyRecipe', (req, res) => {
+	  res.send(`
+  <form id="myForm" action="/ModifyForm?recipe=${req.body.recipeID}" method="POST">
+  <input type="text" name="username" value="Alice">
+</form>
+
+<script>
+  // Soumission automatique
+  document.getElementById('myForm').submit();
+</script>
+  `);
+	//res.redirect(`/ModifyForm?recipe=${req.body.recipeID}`);
+});
+
 let recipeModID;
 app.post('/modifyForm', async(req, res) => {
 	try {
@@ -295,6 +363,8 @@ app.post('/modifyForm', async(req, res) => {
 		 recipeModID=req.query.recipe;
 			let recipeID=recipeModID;
 		console.log(`${pseudo} : ${pseudoID} (recipeID = ${recipeID})`);
+		const [check] = await pool.execute('SELECT * FROM recipe_list WHERE recipeID = ? and userID=? and type="ownrecipe"', [recipeID,pseudoID]);
+		if(check.length===0 && req.cookies.userRole !="admin") res.send('No access role');
 		const [recipeResult] = await pool.execute('SELECT * FROM recipe WHERE id = ?', [recipeID]);
 		const [steps] = await pool.execute('SELECT * FROM instructions WHERE recipeID = ?', [recipeID]);
 		const [ingredients] = await pool.execute('SELECT * FROM liste_ingredients WHERE recipeID = ?', [recipeID]);
@@ -396,12 +466,13 @@ app.post('/modifyRecipe', (req, res) => {
 		console.log("ingPost" + ingPost);
 		console.log(ingredient); console.log(measure);
 	}
-		console.log(stepPost);
-
+		console.log(req.body.step  && req.body.step.length>0);
+				if (req.body.step!=''  && req.body.step) {
 					connection.query('INSERT INTO instructions (instruction, recipeID) VALUES ?', [stepPost], (err2) => {
 						console.log("instructions insert");
 						if (err2) throw err2;
 					});
+				}
 				
 				if (req.body.ingredient && req.body.ingredient!='') {
 					connection.query('INSERT IGNORE INTO liste_ingredients ( ingredient, measure, recipeID) VALUES ?', [ingPost], (err3) => {
@@ -418,9 +489,12 @@ app.post('/modifyRecipe', (req, res) => {
 					if (err4) throw err4;
 				});
 					}
-
+					console.log(req.body.ingredient)
 		console.log("fin"); // INSERT INTO contact SET `id` = 1, `title` = 'Hello MySQL'
+					 
 					res.redirect('/account?message=recipeModified#ownrecipe')
+					//if(url.pathname==="recipe") res.redirect('/recipe?message=recipeMod')
+
 			});
 	}
 	else console.log("not connected!");
@@ -460,11 +534,7 @@ app.get('/login', (req, res) => {
 	let pseudo=req.cookies.pseudo ?? null;
 	if (!pseudo) res.render('login', { user: pseudo, erreur: "" });
 	else res.redirect('/account');
-		/*res.send(`    <!DOCTYPE html> <html lang="fr">
-    <head><meta charset="UTF-8"><title>Iframe</title>
-    </head><body>
-      <h1 style="color:green">You are connected!!</h1>
-    </body></html>`);*/
+
 });
 
 /*
@@ -558,6 +628,8 @@ app.get('/account', async (req, res) => {
 		const fav = recipeResults[0];
 		const created = recipeResults[1];
 		const userInfo = recipeResults[2][0];
+		if (!userInfo.image) userInfo.image = "https://picsum.photos/400/250?random=1";
+
 
 		const [notesResults] = await pool.query('SELECT n.*, r.title FROM notes n JOIN recipe r ON n.recipeID = r.id WHERE n.userID = ?;', [pseudoID]);
 		const notes = notesResults;
@@ -565,11 +637,9 @@ app.get('/account', async (req, res) => {
 		const [commentsResults] = await pool.query('SELECT n.*, r.title FROM commentaires n JOIN recipe r ON n.recipeID = r.id WHERE n.userID = ?;', [pseudoID]);
 		const comments = commentsResults;
 
-		if (!userInfo.image) userInfo.image = "https://picsum.photos/400/250?random=1";
-
 		// Rendu de la page account
 		res.render('account', {
-			title: 'My Account', user: pseudo, userInfo: userInfo,
+			title: 'My Account', user: pseudo,userRole:req.cookies.userRole, userInfo: userInfo,
 			recipes: fav, ownRecipes: created,
 			notes: notes, commentaires: comments, openDiv : req.query.openDiv, message : req.query.message
 		});
@@ -645,6 +715,11 @@ app.post('/signup', (req, res) => {
 						httpOnly: true,    // inaccessible côté client (document.cookie)
 						secure: false,     // true si HTTPS
 					});
+						res.cookie('userRole', "user", {
+						maxAge: 3600000,   // expire dans 1h
+						httpOnly: true,    // inaccessible côté client (document.cookie)
+						secure: false,     // true si HTTPS
+					});
 	res.json( {succeed:true,message:'Account have been created, you can connect now!'});
 	}
 	});
@@ -657,6 +732,7 @@ app.post('/signup', (req, res) => {
 app.post('/logout', (req, res) => {
 	res.clearCookie('pseudo');
 	res.clearCookie('pseudoID');
+	res.clearCookie('userRole');
 	console.log('Cookie "pseudo" supprimé ✅');
 	res.redirect(req.get('referer'));
 });
@@ -672,11 +748,15 @@ app.post('/signin', (req, res) => {
 		if (error) throw error;
 		// Neat!
 
-		if (result && result.length > 0) {
+		if (!(result && result.length > 0)) res.json({ succeed : false, message: "Mail doesn't exist" });
+
+			else {
 			hash = result[0].mdp;
 			console.log(result[0].pseudo + result[0].id);
 			let pseudoBDD = result[0].pseudo;
 			let pseudoIDBDD = result[0].id;
+			let userRole= result[0].role
+
 			bcrypt.compare(mdp, hash, (err, resultCompare) => {
 				if (err) {
 					// Handle error
@@ -686,6 +766,12 @@ app.post('/signin', (req, res) => {
 
 				if (resultCompare) {
 					console.log('Passwords match! User authenticated.');
+					res.cookie('userRole', userRole, {
+						maxAge: 3600000,   // expire dans 1h
+						httpOnly: true,    // inaccessible côté client (document.cookie)
+						secure: false,     // true si HTTPS
+					});
+
 					res.cookie('pseudo', pseudoBDD, {
 						maxAge: 3600000,   // expire dans 1h
 						httpOnly: true,    // inaccessible côté client (document.cookie)
@@ -771,7 +857,16 @@ app.post('/createRecipe', (req, res) => {
 		};
 
 
-		let step = req.body.step.filter(item => item !== null && item !== "");
+		
+
+
+		var query = connection.query('INSERT INTO recipe SET ?', post,
+			function (error, results, fields) {
+				if (error) throw error;
+				const recipeID = results.insertId;  // ← récupère l’ID auto-incrémenté
+				console.log('Dernier recipeID inséré =', recipeID);
+
+let step = req.body.step.filter(item => item !== null && item !== "");
 		let tag = req.body.tag.filter(item => item !== null && item !== "");
 		console.log(tag);
 
@@ -806,15 +901,6 @@ app.post('/createRecipe', (req, res) => {
 
 		const tagPost = tag.map(txt => [txt, recipeID]);
 		console.log(tagPost);
-
-
-		var query = connection.query('INSERT INTO recipe SET ?', post,
-			function (error, results, fields) {
-				if (error) throw error;
-				const recipeID = results.insertId;  // ← récupère l’ID auto-incrémenté
-				console.log('Dernier recipeID inséré =', recipeID);
-
-
 
 				if (step.length > 0) {
 					connection.query('INSERT INTO instructions (instruction, recipeID) VALUES ?', [stepPost], (err2) => {
@@ -906,9 +992,10 @@ app.post('/deleteFav', (req, res) => {
 app.post('/deleteOwn', (req, res) => {
 	if (!pseudo) res.redirect('/');
 	else {
-		console.log(req.body.deleteOwn);
+		recipeID=req.body.deleteOwn;
+		console.log(recipeID);
 		var query = connection.query(`DELETE FROM recipe_list WHERE recipeID = ? AND userID = ? AND type = 'ownrecipe' `
-			, [req.body.deleteOwn, req.cookies.pseudoID], function (error, results, fields) {
+			, [recipeID, req.cookies.pseudoID], function (error, results, fields) {
 				if (error) throw error;
 
 				console.log("supprimée :", results)
@@ -921,6 +1008,7 @@ app.post('/deleteOwn', (req, res) => {
 			, [req.body.deleteOwn, req.body.deleteOwn, req.body.deleteOwn, req.body.deleteOwn, req.body.deleteOwn, req.body.deleteOwn], function (error, results, fields) {
 				if (error) console.log(error);
 
+				res.clearCookie('recipeID');
 				console.log("supprimée :", results)
 				res.redirect('/account#ownrecipe');
 			});
@@ -929,6 +1017,34 @@ app.post('/deleteOwn', (req, res) => {
 	}
 });
 
+//delete own recipe completely on database
+app.post('/deleteRecipe', (req, res) => {
+	if (req.cookies.userRole!="admin") res.redirect('/');
+	else {
+		recipeID=req.body.recipeID;
+		var query = connection.query(`DELETE FROM recipe_list WHERE recipeID = ? AND userID = ?  `
+			, [recipeID, req.cookies.pseudoID], function (error, results, fields) {
+				if (error) throw error;
+
+				console.log("supprimée :", results)
+	
+
+			});
+
+		var query = connection.query(`DELETE FROM instructions WHERE recipeID= ?;DELETE FROM liste_ingredients WHERE recipeID= ?;
+				DELETE FROM tagsList WHERE recipeID= ?;DELETE FROM recipe WHERE id= ?;
+				DELETE FROM commentaires WHERE recipeID= ?;DELETE FROM notes WHERE recipeID= ?;`
+			, [recipeID, recipeID, recipeID, recipeID, recipeID, recipeID], function (error, results, fields) {
+				if (error) console.log(error);
+
+				console.log("supprimée :", results)
+				res.clearCookie('recipeID');
+				res.redirect('/account?message=recipeDeleted#ownrecipe');
+			});
+
+
+	}
+});
 
 
 //search a recipe from search bar
@@ -1177,6 +1293,24 @@ app.post('/deleteComm', (req, res) => {
 	}
 });
 
+app.post('/deleteCommAdmin', (req, res) => {
+	//const pseudo = req.body.pseudo;
+	const recipeID = req.body.recipeID; // attention à la casse ici
+	const userID = req.body.pseudo;
+	if (req.cookies.userRole!="admin") res.redirect('/');
+	else {
+		console.log("recipeID to delete " + recipeID);
+		var query = connection.query(`DELETE FROM commentaires WHERE recipeID = ? AND userID = ?  `
+			, [recipeID, userID ], function (error, results, fields) {
+
+				if (error) throw error;
+
+				console.log("supprimée :", results)
+				res.redirect('/recipe#comments');
+			});
+	}
+});
+
 app.post('/deleteNote', (req, res) => {
 	const pseudo = req.cookies.pseudo;
 	const recipeIDnote = req.body.recipeIDnote; // attention à la casse ici
@@ -1214,7 +1348,7 @@ app.post('/modifyProfil', async (req, res) => {
 			const [pseudoCheck] = await pool.execute('SELECT * FROM users WHERE pseudo=?',
 			[pseudo]);
 
-			if(pseudoCheck.length>0){ res.redirect('/account?openDiv=profil&message=pseudoExist');}
+			if(pseudoCheck.length>0 && pseudo!=req.cookies.pseudo){ res.redirect('/account?openDiv=profil&message=pseudoExist');}
 
 		const [insertResult] = await pool.execute('UPDATE users SET pseudo = ?, image=?,description=? WHERE id=?',
 			[pseudo, image, description, pseudoID]);
@@ -1401,6 +1535,104 @@ app.post('/changePassword', async(req, res) => {
 
 }
 });
+
+// --- GOOGLE AUTH ---
+app.get("/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+app.get("/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/" }),
+  (req, res) => {
+    res.redirect("/profile");
+  }
+);
+
+// --- FACEBOOK AUTH ---
+app.get("/auth/facebook",
+  passport.authenticate("facebook", { scope: ["email"] })
+);
+
+app.get("/auth/facebook/callback",
+  passport.authenticate("facebook", { failureRedirect: "/" }),
+  (req, res) => {
+    res.redirect("/profile");
+  }
+);
+
+// --- INSTAGRAM AUTH ---
+app.get("/auth/instagram",
+  passport.authenticate("instagram")
+);
+
+app.get("/auth/instagram/callback",
+  passport.authenticate("instagram", { failureRedirect: "/" }),
+  (req, res) => {
+    res.redirect("/profile");
+  }
+);
+
+// --- auth to BDD ---
+app.get("/profile", async(req, res) => {
+  if (!req.isAuthenticated()) return res.redirect("/");
+
+   	try {
+		// Connect to the database using promises
+		const pool = await mysql2.createConnection({
+			host: process.env.DB_HOST,
+			user: process.env.DB_USER,
+			password: process.env.DB_PASSWORD,
+			database: process.env.DB_NAME,
+		});
+
+			const user = req.user;
+			const mail = user.emails?.[0]?.value;
+   			console.log(mail);
+
+			const [mailCheck] = await pool.execute('SELECT * FROM users WHERE mail=?',[mail]);
+
+			if(mailCheck.length===0){ 
+			const [insertMail] = await pool.execute('INSERT INTO users (mail,pseudo) VALUES (?,"NoName")',[mail]);
+
+			}
+
+			const [userInfo] = await pool.execute('SELECT * FROM users WHERE mail=?',[mail]);
+
+			let pseudo=userInfo[0]?.pseudo;
+			let pseudoID=userInfo[0].id;
+			let userRole= userInfo[0].role;
+			
+		console.log('pseudo ' + pseudo);
+
+		res.cookie('pseudo', pseudo, {
+			maxAge: 3600000,   // expire dans 1h
+			httpOnly: true,    // inaccessible côté client (document.cookie)
+			secure: false,     // true si HTTPS
+		});
+
+			res.cookie('pseudoID', pseudoID, {
+			maxAge: 3600000,   // expire dans 1h
+			httpOnly: true,    // inaccessible côté client (document.cookie)
+			secure: false,     // true si HTTPS
+		});
+
+			res.cookie('userRole', userRole, {
+			maxAge: 3600000,   // expire dans 1h
+			httpOnly: true,    // inaccessible côté client (document.cookie)
+			secure: false,     // true si HTTPS
+		});		
+
+
+		res.redirect('account');
+
+
+
+	} catch (err) {
+    console.error("Database error:", err);
+    res.status(500).send("Server error");
+  }
+});
+
 
 
 //search recipes recommanded with tag

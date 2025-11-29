@@ -26,18 +26,18 @@
 <form action="modifyRecipe" method="post" id="myForm">
 <h1 class=" fs-1 m-5 p-3 text-center bg-danger rounded-4 text-white">  Write your own recipe!</h1>
         <!--img-->
-        <label for="" class="form-label">Recipe Picture</label>
+        <label  class="form-label">Recipe Picture</label>
         <input class="form-control form-control-sm mb-5 p-2 w-75" type="text" placeholder="<%=recipe.image%>" value="<%=recipe.image%>" name="image" >
         <!--description-->
         
             <!--title-->
-            <label for="" class="form-label"> Recipe Title</label>
+            <label class="form-label"> Recipe Title</label>
     <input class="form-control form-control-sm  mb-5 p-2 w-75" type="text" placeholder="recipe.title" value="<%=recipe.title%>" name="title" >
 
-            <label for="" class="form-label">Recipe Description</label>
+            <label  class="form-label">Recipe Description</label>
     <input class="form-control form-control-sm  mb-5 p-2 w-75" type="text" placeholder="enter description recipe" value="<%=recipe.description%>" name="description" >
 
-  <label for="" class="form-label">Category</label>
+  <label  class="form-label">Category</label>
   <select class="form-select  mb-5 p-2" aria-label="Default select example" name="category">
   <option selected disabled>choose category</option>
     <%    category.forEach(element => { %>
@@ -73,7 +73,7 @@
     <div class="d-flex mt-5 bottomDescription">
     
     <div class="container">
-     <label for="" class="form-label">Recipe Author</label>
+     <label  class="form-label">Recipe Author</label>
     <input class="form-control form-control-sm mb-5 p-2  w-75" type="text" placeholder="enter name author" name="auteur" value="<%=recipe.auteur%>" >
 
     </div>
@@ -124,14 +124,14 @@
     <div class="d-lg-flex mt-5 mt-lg-0 recipeIngredients" >
       <div class="">
     <h2>Ingredients</h2>
-    <ul class="list-group ingredientsList" id="ingredientsList" >
+    <ol class="list-group ingredientsList list-unstyled" id="ingredientsList" >
 
                 <% ingredients.forEach(ing => { %>
-         <li><input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient 1" name="ingredient[]" value="<%=ing.ingredient%>"> </li> 
+         <li><input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient " name="ingredient[]" value="<%=ing.ingredient%>"> </li> 
                      <% }); %>
-               <li>   <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient 1" name="ingredient[]" >
+               <li>   <input class="form-control form-control-sm  m-2 p-2 w-75" type="text" placeholder="write ingredient " name="ingredient[]" >
                 </li> 
-    </ul>
+    </ol>
 
         <i class="fa-regular fa-plus fs-3 mx-3 mb-3  clickable " onclick='addIngredient()' ><span  class="fs-6 ">Add more ingredients</span></i>
 

@@ -1,0 +1,11 @@
+<p>gigi works!</p>
+@if (name.trim() != '') {
+<p >Bonjour, {{ name }}</p>
+}
+@else {
+<p >Bonjour, Mesut</p>
+}
+<input name="name" placeholder="Enter your name" [(ngModel)]="name" >
+
+
+    <button (click)="inc()">Clicked {{ count }} times</button>

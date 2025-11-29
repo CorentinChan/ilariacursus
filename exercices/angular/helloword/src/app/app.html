@@ -1,0 +1,57 @@
+<h1>Hello world!</h1>
+
+<app-gigi></app-gigi>
+<app-nono message="I send  a message to child" (messageChild)="messageFrom($event)"></app-nono>
+
+<p>message from child on app html : {{messageRecup}}</p>
+
+
+
+<app-img [img]="images"  [index]=index ></app-img>
+
+<button (click)="changeImg()"> nextImage</button>
+
+
+<form #f="ngForm" (ngSubmit)="onSubmit()">
+      <label>
+        mail:
+        <input type="email" name="email" email [(ngModel)]="email" placeholder="Enter your email"  required minlength="4" #emailCtrl="ngModel">
+      </label>
+
+        <label>
+        password:
+        <input type="password" name="password" [(ngModel)]="password" placeholder="Enter your password"  required minlength="4" #passCtrl="ngModel">
+      </label>
+      <button type="submit" [disabled]="f.invalid">Submit</button>
+    </form>
+
+@if (emailCtrl.invalid && emailCtrl.touched) {
+  <div> 
+    @if (emailCtrl.errors?.['required']) {
+      <p>Email required</p>
+    }
+    @if (emailCtrl.errors?.['minlength']) {
+      <p>Minimum 4 characters for email</p>
+    }
+    @if (emailCtrl.errors?.['email']) {
+      <p>Invalid email format</p>
+    }
+  </div>
+}
+@if (passCtrl.invalid && passCtrl.touched) {
+    <div>
+        @if (passCtrl.errors?.['required']) {
+      <p>Password required</p>
+    }
+    @if (passCtrl.errors?.['minlength']) {
+      <p>Minimum 4 characters for password</p>
+}</div>
+}
+    <p>Value: {{ email }}</p>
+    @if(submitted){  <p >Submitted!</p>
+}
+
+   
+
+
+

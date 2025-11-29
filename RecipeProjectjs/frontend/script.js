@@ -129,13 +129,14 @@ overlay2= document.getElementById('overlay2');
 
   //form page 
     //add steps
-
+/*
     function addStep(){
       console.log('addstep')
       let liste=document.querySelector('.instructionsList');
       
       liste.innerHTML+=' <li class="list-group-item border-0 border-bottom" > <input class="form-control form-control-sm  m-3 p-2 w-75" type="text" placeholder="write ingredient" ></li>';
     }
+*/
 
 //print page
 if(document.getElementById("print")){ 

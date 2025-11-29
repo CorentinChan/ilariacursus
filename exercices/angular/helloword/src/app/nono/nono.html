@@ -1,0 +1,5 @@
+<p>nono works!</p>
+<p>message on child html is : {{message}}</p>
+
+<input name="messagetoSend" placeholder="Enter your message" (keyup)="messageFromChild()" [(ngModel)]="message" >
+<button (click)="messageFromChild()">send message</button>

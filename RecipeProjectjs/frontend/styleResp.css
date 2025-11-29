@@ -8,6 +8,10 @@
       body{
       overflow-x: auto;}
 
+             .nomobile{
+    display:none;
+   }
+
         .mobile{
     display:block;
    }
